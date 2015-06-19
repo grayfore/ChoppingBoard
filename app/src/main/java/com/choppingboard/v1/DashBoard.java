@@ -23,7 +23,9 @@ public class DashBoard extends Activity{
         DashBoard.this.finish();
     }
     public void buildScreen(View view){
-
+        Intent intent = new Intent(DashBoard.this, BuildScreen.class);
+        DashBoard.this.startActivity(intent);
+        DashBoard.this.finish();
     }
     public void invoiceScreen(View view){
 

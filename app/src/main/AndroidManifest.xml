@@ -25,6 +25,10 @@
             android:name=".SeeScreen"
             android:label="@string/title_activity_see_screen" >
         </activity>
+        <activity
+            android:name=".BuildScreen"
+            android:label="@string/title_activity_build_screen" >
+        </activity>
     </application>
 
 </manifest>
