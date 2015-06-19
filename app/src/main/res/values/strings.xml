@@ -2,5 +2,9 @@
     <string name="app_name">ChoppingBoard</string>
     <color name="blue">#0000FF</color>
     <color name="white">#FFFFFF</color>
+    <string name="title_activity_see_screen">SeeScreen</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
