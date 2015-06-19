@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" android:layout_height="fill_parent">
 
-    <ImageView android:id="@+id/splashscreen" android:layout_width="wrap_content"
-        android:layout_height="320dp"
+    <ImageView android:id="@+id/splashscreen" android:layout_width="match_parent"
+        android:layout_height="345dp"
         android:src="@drawable/colorbg"
         android:layout_gravity="center"/>
 
