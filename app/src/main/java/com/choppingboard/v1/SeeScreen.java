@@ -1,17 +1,22 @@
 package com.choppingboard.v1;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 
 
-public class SeeScreen extends ActionBarActivity {
+public class SeeScreen extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_screen);
+
+        String[] cars = {"Order 1" ,"Order 2", "Order 3","Order 4","Order 5","Order 6","Order 7","Order 8"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getListView().getContext(), android.R.layout.simple_list_item_1, cars);
+        getListView().setAdapter(adapter);
     }
 
     @Override
