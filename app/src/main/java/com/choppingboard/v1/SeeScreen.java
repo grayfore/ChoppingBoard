@@ -4,6 +4,8 @@ import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.wdullaer.swipeactionadapter.SwipeActionAdapter;
@@ -21,7 +23,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_screen);
 
-        ArrayList<String> orders = new ArrayList<>();
+        final ArrayList<String> orders = new ArrayList<>();
         CustomList adapter = new CustomList(SeeScreen.this, orders);
         getListView().setAdapter(adapter);
 
@@ -38,10 +40,20 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
                 .addBackground(SwipeDirections.DIRECTION_FAR_RIGHT,R.layout.rightswipe)
                 .addBackground(SwipeDirections.DIRECTION_NORMAL_RIGHT, R.layout.rightswipe);
 
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Toast.makeText(SeeScreen.this, "You clicked on " + orders.get(position), Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
         adapter.add("thing");
         adapter.notifyDataSetChanged();
     }
+
 
 
 
