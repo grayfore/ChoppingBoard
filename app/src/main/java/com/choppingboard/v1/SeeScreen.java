@@ -4,11 +4,12 @@ import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.wdullaer.swipeactionadapter.SwipeActionAdapter;
 import com.wdullaer.swipeactionadapter.SwipeDirections;
+
+import java.util.ArrayList;
 
 
 public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeActionListener {
@@ -20,8 +21,8 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_screen);
 
-        String[] cars = {"Order 1" ,"Order 2", "Order 3","Order 4","Order 5","Order 6","Order 7","Order 8"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getListView().getContext(), android.R.layout.simple_list_item_1, cars);
+        ArrayList<String> orders = new ArrayList<>();
+        CustomList adapter = new CustomList(SeeScreen.this, orders);
         getListView().setAdapter(adapter);
 
         mAdapter = new SwipeActionAdapter(adapter);
@@ -38,6 +39,8 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
                 .addBackground(SwipeDirections.DIRECTION_NORMAL_RIGHT, R.layout.rightswipe);
 
 
+        adapter.add("thing");
+        adapter.notifyDataSetChanged();
     }
 
 
