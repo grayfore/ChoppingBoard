@@ -12,7 +12,8 @@ public class CommonUtilities {
     static final String SERVER_URL = "http://easychops.com/gcm_server_php/register.php";
 
     // Google project id
-    static final String SENDER_ID = "508818938138";
+//    static final String SENDER_ID = "508818938138";
+    static final String SENDER_ID = "897506275822";
 
     /**
      * Tag used on log messages.
