@@ -3,7 +3,7 @@ package com.choppingboard.v1;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.android.gcm.GCMRegistrar;
+import com.google.android.gms.gcm.GcmReceiver;
 
 import java.io.IOException;
 import java.io.OutputStream;
