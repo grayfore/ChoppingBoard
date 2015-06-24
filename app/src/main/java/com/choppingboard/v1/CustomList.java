@@ -34,9 +34,9 @@ public class CustomList extends ArrayAdapter<String>{
                 LayoutInflater inflater = context.getLayoutInflater();
                 convertView = inflater.inflate(R.layout.customlist,parent, false);
             }
-            String  name = getItem(position);
+            String  price = getItem(position);
             TextView txtview = (TextView) convertView.findViewById(R.id.price);
-            txtview.setText(name);
+            txtview.setText(price);
             return convertView;
         }
         catch(Exception e)
