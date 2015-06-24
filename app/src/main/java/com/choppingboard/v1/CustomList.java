@@ -25,15 +25,24 @@ public class CustomList extends ArrayAdapter<String>{
 
     }
 
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = context.getLayoutInflater();
-        View rowView= inflater.inflate(R.layout.customlist, null, true);
-        TextView price = (TextView)rowView.findViewById(R.id.price);
-        price.setText(orders.get(position));
-
-        return rowView;
-
+        try
+        {
+            if(convertView==null)
+            {
+                LayoutInflater inflater = context.getLayoutInflater();
+                convertView = inflater.inflate(R.layout.customlist,parent, false);
+            }
+            String  name = getItem(position);
+            TextView txtview = (TextView) convertView.findViewById(R.id.price);
+            txtview.setText(name);
+            return convertView;
+        }
+        catch(Exception e)
+        {
+        }
+        return null;
     }
+
 }

@@ -2,6 +2,7 @@ package com.choppingboard.v1;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,10 +27,10 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
         final ArrayList<String> orders = new ArrayList<>();
         CustomList adapter = new CustomList(SeeScreen.this, orders);
         getListView().setAdapter(adapter);
-
+        Log.v("thing", "check 1");
         mAdapter = new SwipeActionAdapter(adapter);
         mAdapter.setSwipeActionListener(this)
-                .setDimBackgrounds(true)
+//                .setDimBackgrounds(true)
                 .setListView(getListView());
         setListAdapter(mAdapter);
 
@@ -37,7 +38,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
         mAdapter
                 .addBackground(SwipeDirections.DIRECTION_FAR_LEFT,R.layout.leftswipe)
                 .addBackground(SwipeDirections.DIRECTION_NORMAL_LEFT,R.layout.leftswipe)
-                .addBackground(SwipeDirections.DIRECTION_FAR_RIGHT,R.layout.rightswipe)
+                .addBackground(SwipeDirections.DIRECTION_FAR_RIGHT, R.layout.rightswipe)
                 .addBackground(SwipeDirections.DIRECTION_NORMAL_RIGHT, R.layout.rightswipe);
 
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -50,7 +51,45 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
             }
         });
 
-        adapter.add("thing");
+        adapter.add("Amount: $19.99");
+        Log.v("thing", "check 2");
+        adapter.add("Amount: $29.99");
+        Log.v("thing", "check 3");
+        adapter.add("Amount: $39.99");
+        Log.v("thing", "check 4");
+        adapter.add("Amount: $49.99");
+        Log.v("thing", "check 5");
+        adapter.add("Amount: $59.99");
+        Log.v("thing", "check 6");
+        adapter.add("Amount: $69.99");
+        Log.v("thing", "check 7");
+        adapter.add("Amount: $79.99");
+        Log.v("thing", "check 8");
+        adapter.add("Amount: $89.99");
+        Log.v("thing", "check 9");
+        adapter.add("Amount: $99.99");
+        Log.v("thing", "check 10");
+        adapter.add("Amount: $109.99");
+        Log.v("thing", "check 11");
+        adapter.add("Amount: $129.99");
+        Log.v("thing", "check 12");
+        adapter.add("Amount: $139.99");
+        Log.v("thing", "check 13");
+        adapter.add("Amount: $149.99");
+        Log.v("thing", "check 14");
+        adapter.add("Amount: $159.99");
+        Log.v("thing", "check 15");
+        adapter.add("Amount: $169.99");
+        Log.v("thing", "check 16");
+        adapter.add("Amount: $179.99");
+        Log.v("thing", "check 17");
+        adapter.add("Amount: $189.99");
+        Log.v("thing", "check 18");
+        adapter.add("Amount: $199.99");
+        Log.v("thing", "check 19");
+        adapter.add("Amount: $209.99");
+        Log.v("thing", "check 20");
+
         adapter.notifyDataSetChanged();
     }
 
