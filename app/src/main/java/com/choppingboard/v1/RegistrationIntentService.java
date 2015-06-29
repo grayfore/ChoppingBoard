@@ -27,7 +27,19 @@ import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class RegistrationIntentService extends IntentService {
 
@@ -88,7 +100,52 @@ public class RegistrationIntentService extends IntentService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-        // Add custom implementation, as needed.
+        JSONObject json = new JSONObject();
+        String targetUrl = "http://choppingboard.comuf.com/json.php";
+        try {
+            json.put("token", token);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        executePost(targetUrl, json.toString());
+    }
+
+    public static String executePost(String targetURL, String urlParameters) {
+        URL url;
+        HttpURLConnection urlConnection = null;
+        try {
+            url = new URL(targetURL);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
+            wr.writeBytes(urlParameters);
+            wr.flush();
+            wr.close();
+
+            InputStream is = url.openStream();
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+            String line;
+            String response = urlConnection.getResponseMessage();
+            while ((line = rd.readLine()) != null) {
+                response += line;
+                response += "\r";
+            }
+            rd.close();
+            return response;
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            if(urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
     }
 
     /**
