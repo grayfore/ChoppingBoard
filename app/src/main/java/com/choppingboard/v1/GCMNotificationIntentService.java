@@ -47,7 +47,7 @@ public class GCMNotificationIntentService extends IntentService {
     }
 
     private void sendNotification(String msg) {
-        Intent resultIntent = new Intent(this, HomeActivity.class);
+        Intent resultIntent = new Intent(this, SeeScreen.class);
         resultIntent.putExtra("msg", msg);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0,
                 resultIntent, PendingIntent.FLAG_ONE_SHOT);

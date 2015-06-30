@@ -8,8 +8,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.wdullaer.swipeactionadapter.SwipeActionAdapter;
 import com.wdullaer.swipeactionadapter.SwipeDirections;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -17,14 +22,29 @@ import java.util.ArrayList;
 public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeActionListener {
 
     SwipeActionAdapter mAdapter;
+    CustomList adapter;
+    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_screen);
 
-        final ArrayList<String> orders = new ArrayList<>();
-        CustomList adapter = new CustomList(SeeScreen.this, orders);
+        // Intent Message sent from Broadcast Receiver
+        String str = getIntent().getStringExtra("msg");
+
+        // Check if Google Play Service is installed in Device
+        // Play services is needed to handle GCM stuffs
+        if (!checkPlayServices()) {
+            Toast.makeText(
+                    getApplicationContext(),
+                    "This device doesn't support Play services, App will not work normally",
+                    Toast.LENGTH_LONG).show();
+        }
+
+        final ArrayList<JSONObject> orders = new ArrayList<>();
+        adapter = new CustomList(SeeScreen.this, orders);
         getListView().setAdapter(adapter);
         mAdapter = new SwipeActionAdapter(adapter);
         mAdapter.setSwipeActionListener(this)
@@ -49,26 +69,21 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
             }
         });
 
-        adapter.add("Amount: $19.99");
-//        adapter.add("Amount: $29.99");
-//        adapter.add("Amount: $39.99");
-//        adapter.add("Amount: $49.99");
-//        adapter.add("Amount: $59.99");
-//        adapter.add("Amount: $69.99");
-//        adapter.add("Amount: $79.99");
-//        adapter.add("Amount: $89.99");
-//        adapter.add("Amount: $99.99");
-//        adapter.add("Amount: $109.99");
-//        adapter.add("Amount: $129.99");
-//        adapter.add("Amount: $139.99");
-//        adapter.add("Amount: $149.99");
-//        adapter.add("Amount: $159.99");
-//        adapter.add("Amount: $169.99");
-//        adapter.add("Amount: $179.99");
-//        adapter.add("Amount: $189.99");
-//        adapter.add("Amount: $199.99");
-//        adapter.add("Amount: $209.99");
         adapter.notifyDataSetChanged();
+
+
+
+        if (str != null) {
+            // Set the message
+            try {
+                JSONObject order = new JSONObject(str);
+                adapter.add(order);
+
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+
+        }
     }
 
 
@@ -133,5 +148,38 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
             ).show();
             mAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkPlayServices();
+    }
+
+    // Check if Google Playservices is installed in Device or not
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil
+                .isGooglePlayServicesAvailable(this);
+        // When Play services not found in device
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                // Show Error dialog to install Play services
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Toast.makeText(
+                        getApplicationContext(),
+                        "This device doesn't support Play services, App will not work normally",
+                        Toast.LENGTH_LONG).show();
+                finish();
+            }
+            return false;
+        } else {
+            Toast.makeText(
+                    getApplicationContext(),
+                    "This device supports Play services, App will work normally",
+                    Toast.LENGTH_LONG).show();
+        }
+        return true;
     }
 }

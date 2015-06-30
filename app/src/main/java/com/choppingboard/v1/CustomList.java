@@ -7,18 +7,20 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 
 /**
  * Created by Jeff on 6/22/15.
  */
-public class CustomList extends ArrayAdapter<String>{
+public class CustomList extends ArrayAdapter<JSONObject>{
 
     private final Activity context;
-    private final ArrayList<String> orders;
+    private final ArrayList<JSONObject> orders;
 
-    public CustomList(Activity context, ArrayList<String> orders) {
+    public CustomList(Activity context, ArrayList<JSONObject> orders) {
         super(context, R.layout.customlist, orders);
         this.context = context;
         this.orders = orders;
@@ -34,8 +36,9 @@ public class CustomList extends ArrayAdapter<String>{
                 LayoutInflater inflater = context.getLayoutInflater();
                 convertView = inflater.inflate(R.layout.customlist,parent, false);
             }
-            String  price = getItem(position);
+            JSONObject  orderlist = getItem(position);
             TextView txtview = (TextView) convertView.findViewById(R.id.price);
+            String price = orderlist.getString("subtotal");
             txtview.setText(price);
             return convertView;
         }

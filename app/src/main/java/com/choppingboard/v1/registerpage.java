@@ -58,7 +58,7 @@ public class registerpage extends Activity {
 
         //When Email ID is set in Sharedpref, User will be taken to HomeActivity
         if (!TextUtils.isEmpty(registrationId)) {
-            Intent i = new Intent(applicationContext, HomeActivity.class);
+            Intent i = new Intent(applicationContext, SeeScreen.class);
             i.putExtra("regId", registrationId);
             startActivity(i);
             finish();
