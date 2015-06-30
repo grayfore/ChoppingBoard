@@ -50,24 +50,24 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
         });
 
         adapter.add("Amount: $19.99");
-        adapter.add("Amount: $29.99");
-        adapter.add("Amount: $39.99");
-        adapter.add("Amount: $49.99");
-        adapter.add("Amount: $59.99");
-        adapter.add("Amount: $69.99");
-        adapter.add("Amount: $79.99");
-        adapter.add("Amount: $89.99");
-        adapter.add("Amount: $99.99");
-        adapter.add("Amount: $109.99");
-        adapter.add("Amount: $129.99");
-        adapter.add("Amount: $139.99");
-        adapter.add("Amount: $149.99");
-        adapter.add("Amount: $159.99");
-        adapter.add("Amount: $169.99");
-        adapter.add("Amount: $179.99");
-        adapter.add("Amount: $189.99");
-        adapter.add("Amount: $199.99");
-        adapter.add("Amount: $209.99");
+//        adapter.add("Amount: $29.99");
+//        adapter.add("Amount: $39.99");
+//        adapter.add("Amount: $49.99");
+//        adapter.add("Amount: $59.99");
+//        adapter.add("Amount: $69.99");
+//        adapter.add("Amount: $79.99");
+//        adapter.add("Amount: $89.99");
+//        adapter.add("Amount: $99.99");
+//        adapter.add("Amount: $109.99");
+//        adapter.add("Amount: $129.99");
+//        adapter.add("Amount: $139.99");
+//        adapter.add("Amount: $149.99");
+//        adapter.add("Amount: $159.99");
+//        adapter.add("Amount: $169.99");
+//        adapter.add("Amount: $179.99");
+//        adapter.add("Amount: $189.99");
+//        adapter.add("Amount: $199.99");
+//        adapter.add("Amount: $209.99");
         adapter.notifyDataSetChanged();
     }
 
