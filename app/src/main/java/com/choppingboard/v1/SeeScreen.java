@@ -1,6 +1,7 @@
 package com.choppingboard.v1;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +26,8 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
     CustomList adapter;
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     PopupWindow pwindow;
+    Context c;
+
 
 
     @Override
@@ -34,6 +37,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
 
         // Intent Message sent from Broadcast Receiver
         String str = getIntent().getStringExtra("msg");
+
 
         // Check if Google Play Service is installed in Device
         // Play services is needed to handle GCM stuffs
@@ -181,4 +185,10 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
         }
         return true;
     }
+
+    public Context getC() {
+        return c;
+    }
+
+
 }
