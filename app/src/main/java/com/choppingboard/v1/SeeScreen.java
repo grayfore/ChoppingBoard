@@ -24,6 +24,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
     SwipeActionAdapter mAdapter;
     CustomList adapter;
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    PopupWindow pwindow;
 
 
     @Override
@@ -64,8 +65,9 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Toast.makeText(SeeScreen.this, "You clicked on " + orders.get(position), Toast.LENGTH_SHORT).show();
-
+//                Toast.makeText(SeeScreen.this, "You clicked on " + orders.get(position), Toast.LENGTH_SHORT).show();
+                pwindow = new com.choppingboard.v1.PopupWindow(SeeScreen.this,orders.get(position));
+                pwindow.show(findViewById(R.id.seescreen), 0, 0);
             }
         });
 
@@ -85,9 +87,6 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
 
         }
     }
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
