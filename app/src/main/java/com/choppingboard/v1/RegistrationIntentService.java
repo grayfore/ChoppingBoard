@@ -68,7 +68,6 @@ public class RegistrationIntentService extends IntentService {
                 // [END get_token]
                 Log.i(TAG, "GCM Registration Token: " + token);
 
-                // TODO: Implement this method to send any registration to your app's servers.
                 sendRegistrationToServer(token);
 
                 // Subscribe to topic channels
@@ -106,6 +105,7 @@ public class RegistrationIntentService extends IntentService {
             json.put("token", token);
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.d(TAG, e.toString());
         }
         executePost(targetUrl, json.toString());
     }
@@ -118,8 +118,8 @@ public class RegistrationIntentService extends IntentService {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-            urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
+            urlConnection.setDoInput(true);
 
             DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
             wr.writeBytes(urlParameters);
@@ -135,10 +135,12 @@ public class RegistrationIntentService extends IntentService {
                 response += "\r";
             }
             rd.close();
+            Log.d(TAG, response);
             return response;
         }
         catch(Exception e) {
             e.printStackTrace();
+            Log.d(TAG, e.toString());
             return null;
         }
         finally {

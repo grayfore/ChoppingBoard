@@ -34,6 +34,7 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
+        <service android:name="com.choppingboard.v1.RegistrationIntentService"/>
         <service
             android:name="com.choppingboard.MyInstanceIDListenerService"
             android:exported="false">
