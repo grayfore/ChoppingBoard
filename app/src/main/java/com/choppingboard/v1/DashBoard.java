@@ -14,7 +14,8 @@ public class DashBoard extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
+        Intent intent = new Intent(this, RegistrationIntentService.class);
+        startService(intent);
     }
 
     public void seeScreen(View view){
