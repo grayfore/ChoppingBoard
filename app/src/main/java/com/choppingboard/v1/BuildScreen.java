@@ -1,5 +1,6 @@
 package com.choppingboard.v1;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -35,4 +36,13 @@ public class BuildScreen extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this,DashBoard.class);
+        BuildScreen.this.startActivity(intent);
+        BuildScreen.this.finish();
+    }
+
 }

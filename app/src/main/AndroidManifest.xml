@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.choppingboard.v1" >
+    package="com.choppingboard.v1"
+    >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -20,14 +21,16 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        >
 
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
 
 
         <activity
             android:name=".registerpage"
-            android:label="@string/app_name" android:noHistory="true">
+            android:label="@string/app_name" android:noHistory="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
@@ -38,7 +41,8 @@
         <activity
             android:name="com.choppingboard.v1.HomeActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="@string/app_name" android:noHistory="true">
+            android:label="@string/app_name" android:noHistory="true"
+            android:screenOrientation="portrait">
         </activity>
 
         <!-- Register Broadcast receiver -->
@@ -67,21 +71,26 @@
         </activity>
         <activity
             android:name=".DashBoard"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
             android:name=".SeeScreen"
-            android:label="@string/title_activity_see_screen" >
+            android:label="@string/title_activity_see_screen"
+            android:parentActivityName=".DashBoard"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
             android:name=".BuildScreen"
-            android:label="@string/title_activity_build_screen" >
+            android:label="@string/title_activity_build_screen"
+            android:parentActivityName=".DashBoard"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>

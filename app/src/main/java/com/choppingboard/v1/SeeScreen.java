@@ -1,8 +1,13 @@
 package com.choppingboard.v1;
 
 import android.app.ListActivity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +32,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     PopupWindow pwindow;
     Context c;
+    ArrayList<JSONObject> orders;
 
 
 
@@ -35,8 +41,9 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_screen);
 
+
         // Intent Message sent from Broadcast Receiver
-        String str = getIntent().getStringExtra("msg");
+//        String str = getIntent().getStringExtra("msg");
 
 
         // Check if Google Play Service is installed in Device
@@ -48,7 +55,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
                     Toast.LENGTH_LONG).show();
         }
 
-        final ArrayList<JSONObject> orders = new ArrayList<>();
+        orders = new ArrayList<>();
         adapter = new CustomList(SeeScreen.this, orders);
         getListView().setAdapter(adapter);
         mAdapter = new SwipeActionAdapter(adapter);
@@ -79,18 +86,42 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
 
 
 
-        if (str != null) {
-            // Set the message
-            try {
-                JSONObject order = new JSONObject(str);
-                adapter.add(order);
+//        if (str != null) {
+//            // Set the message
+//            try {
+//                JSONObject order = new JSONObject(str);
+//                adapter.add(order);
+//
+//            }catch (JSONException e){
+//                e.printStackTrace();
+//            }
+//
+//        }
 
-            }catch (JSONException e){
-                e.printStackTrace();
-            }
-
-        }
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter("order"));
     }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String message = intent.getStringExtra("msg");
+            Log.d("receiver", "Got message: " + message);
+            if (message != null) {
+                // Set the message
+                try {
+                    JSONObject order = new JSONObject(message);
+                    adapter.add(order);
+                    adapter.notifyDataSetChanged();
+
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -186,9 +217,18 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
         return true;
     }
 
-    public Context getC() {
-        return c;
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this,DashBoard.class);
+        SeeScreen.this.startActivity(intent);
+        SeeScreen.this.finish();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        // Unregister since the activity is about to be closed.
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
+    }
 }

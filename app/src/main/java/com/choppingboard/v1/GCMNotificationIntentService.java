@@ -3,6 +3,7 @@ package com.choppingboard.v1;
 /**
  * Created by Jeff on 6/28/15.
  */
+
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -11,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -47,10 +49,12 @@ public class GCMNotificationIntentService extends IntentService {
     }
 
     private void sendNotification(String msg) {
-        Intent resultIntent = new Intent(this, SeeScreen.class);
+//        Intent resultIntent = new Intent(this, SeeScreen.class);
+        Intent resultIntent = new Intent("order");
         resultIntent.putExtra("msg", msg);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0,
                 resultIntent, PendingIntent.FLAG_ONE_SHOT);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
 
         NotificationCompat.Builder mNotifyBuilder;
         NotificationManager mNotificationManager;
