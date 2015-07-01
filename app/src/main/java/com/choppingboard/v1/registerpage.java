@@ -162,7 +162,7 @@ public class registerpage extends Activity {
                                 "Reg Id shared successfully with Web App ",
                                 Toast.LENGTH_LONG).show();
                         Intent i = new Intent(applicationContext,
-                                SeeScreen.class);
+                                DashBoard.class);
                         i.putExtra("regId", regId);
                         startActivity(i);
                         finish();

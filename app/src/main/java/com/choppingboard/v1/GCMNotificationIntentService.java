@@ -49,37 +49,74 @@ public class GCMNotificationIntentService extends IntentService {
     }
 
     private void sendNotification(String msg) {
-//        Intent resultIntent = new Intent(this, SeeScreen.class);
-        Intent resultIntent = new Intent("order");
-        resultIntent.putExtra("msg", msg);
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0,
-                resultIntent, PendingIntent.FLAG_ONE_SHOT);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+        if(!SeeScreen.active){
+            Intent resultIntent = new Intent(this, SeeScreen.class);
+            resultIntent.putExtra("msg", msg);
 
-        NotificationCompat.Builder mNotifyBuilder;
-        NotificationManager mNotificationManager;
+            PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0,
+                    resultIntent, PendingIntent.FLAG_ONE_SHOT);
 
-        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder mNotifyBuilder;
+            NotificationManager mNotificationManager;
 
-        mNotifyBuilder = new NotificationCompat.Builder(this)
-                .setContentTitle("Alert")
-                .setContentText("You've received new message.")
-                .setSmallIcon(R.drawable.colorbg);
-        // Set pending intent
-        mNotifyBuilder.setContentIntent(resultPendingIntent);
+            mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // Set Vibrate, Sound and Light
-        int defaults = 0;
-        defaults = defaults | Notification.DEFAULT_LIGHTS;
-        defaults = defaults | Notification.DEFAULT_VIBRATE;
-        defaults = defaults | Notification.DEFAULT_SOUND;
+            mNotifyBuilder = new NotificationCompat.Builder(this)
+                    .setContentTitle("Alert")
+                    .setContentText("You've received new message.")
+                    .setSmallIcon(R.drawable.colorbg);
+            // Set pending intent
+            mNotifyBuilder.setContentIntent(resultPendingIntent);
 
-        mNotifyBuilder.setDefaults(defaults);
-        // Set the content for Notification
-        mNotifyBuilder.setContentText("New order received");
-        // Set autocancel
-        mNotifyBuilder.setAutoCancel(true);
-        // Post a notification
-        mNotificationManager.notify(notifyID, mNotifyBuilder.build());
+            // Set Vibrate, Sound and Light
+            int defaults = 0;
+            defaults = defaults | Notification.DEFAULT_LIGHTS;
+            defaults = defaults | Notification.DEFAULT_VIBRATE;
+            defaults = defaults | Notification.DEFAULT_SOUND;
+
+            mNotifyBuilder.setDefaults(defaults);
+            // Set the content for Notification
+            mNotifyBuilder.setContentText("New order received");
+            // Set autocancel
+            mNotifyBuilder.setAutoCancel(true);
+            // Post a notification
+            mNotificationManager.notify(notifyID, mNotifyBuilder.build());
+        }
+        else{
+            Intent resultIntent = new Intent("order");
+            resultIntent.putExtra("msg", msg);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+            PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0,
+                    resultIntent, PendingIntent.FLAG_ONE_SHOT);
+
+            NotificationCompat.Builder mNotifyBuilder;
+            NotificationManager mNotificationManager;
+
+            mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            mNotifyBuilder = new NotificationCompat.Builder(this)
+                    .setContentTitle("Alert")
+                    .setContentText("You've received new message.")
+                    .setSmallIcon(R.drawable.colorbg);
+            // Set pending intent
+            mNotifyBuilder.setContentIntent(resultPendingIntent);
+
+            // Set Vibrate, Sound and Light
+            int defaults = 0;
+            defaults = defaults | Notification.DEFAULT_LIGHTS;
+            defaults = defaults | Notification.DEFAULT_VIBRATE;
+            defaults = defaults | Notification.DEFAULT_SOUND;
+
+            mNotifyBuilder.setDefaults(defaults);
+            // Set the content for Notification
+            mNotifyBuilder.setContentText("New order received");
+            // Set autocancel
+            mNotifyBuilder.setAutoCancel(true);
+            // Post a notification
+            mNotificationManager.notify(notifyID, mNotifyBuilder.build());
+
+        }
+
+
     }
 }

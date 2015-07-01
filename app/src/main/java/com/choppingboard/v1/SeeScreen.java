@@ -34,7 +34,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
     Context c;
     ArrayList<JSONObject> orders;
 
-
+    static boolean active = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
 
 
         // Intent Message sent from Broadcast Receiver
-//        String str = getIntent().getStringExtra("msg");
+        String str = getIntent().getStringExtra("msg");
 
 
         // Check if Google Play Service is installed in Device
@@ -86,17 +86,17 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
 
 
 
-//        if (str != null) {
-//            // Set the message
-//            try {
-//                JSONObject order = new JSONObject(str);
-//                adapter.add(order);
-//
-//            }catch (JSONException e){
-//                e.printStackTrace();
-//            }
-//
-//        }
+        if (str != null) {
+            // Set the message
+            try {
+                JSONObject order = new JSONObject(str);
+                adapter.add(order);
+
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+
+        }
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("order"));
@@ -230,5 +230,17 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
         // Unregister since the activity is about to be closed.
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         super.onDestroy();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
     }
 }
