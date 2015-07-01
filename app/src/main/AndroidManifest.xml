@@ -7,26 +7,28 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-    <permission android:name="com.choppingboard.v1.permission.C2D_MESSAGE"
+    <permission
+        android:name="com.choppingboard.v1.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-    <uses-permission android:name="com.choppingboard.v1.permission.C2D_MESSAGE" />
 
+    <uses-permission android:name="com.choppingboard.v1.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="com.choppingboard.v1" />
             </intent-filter>
         </receiver>
+
         <service
             android:name="com.choppingboard.MyGcmListenerService"
             android:exported="false" >
@@ -34,12 +36,12 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
-        <service android:name="com.choppingboard.v1.RegistrationIntentService"/>
+        <service android:name=".RegistrationIntentService" />
         <service
             android:name="com.choppingboard.MyInstanceIDListenerService"
-            android:exported="false">
+            android:exported="false" >
             <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
         </service>
 
@@ -53,9 +55,6 @@
         <activity
             android:name=".DashBoard"
             android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".SeeScreen"
@@ -64,6 +63,13 @@
         <activity
             android:name=".BuildScreen"
             android:label="@string/title_activity_build_screen" >
+        </activity>
+        <activity
+            android:name=".RegisterScreen"
+            android:label="@string/app_name" android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
         </activity>
     </application>
 

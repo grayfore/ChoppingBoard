@@ -17,6 +17,7 @@
 package com.choppingboard.v1;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -45,6 +46,9 @@ public class RegistrationIntentService extends IntentService {
 
     private static final String TAG = "RegIntentService";
     private static final String[] TOPICS = {"global"};
+    public static final String REG_ID = "regId";
+    public static final String EMAIL_ID = "eMailId";
+    private String email;
 
     public RegistrationIntentService() {
         super(TAG);
@@ -52,6 +56,7 @@ public class RegistrationIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        email = intent.getStringExtra("email");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         try {
@@ -103,11 +108,13 @@ public class RegistrationIntentService extends IntentService {
         String targetUrl = "http://choppingboard.comuf.com/json.php";
         try {
             json.put("token", token);
+            json.put("email", email);
         } catch (JSONException e) {
             e.printStackTrace();
             Log.d(TAG, e.toString());
         }
         executePost(targetUrl, json.toString());
+        storeRegIdinSharedPref(token);
     }
 
     public static String executePost(String targetURL, String urlParameters) {
@@ -148,6 +155,16 @@ public class RegistrationIntentService extends IntentService {
                 urlConnection.disconnect();
             }
         }
+    }
+
+    // Store  RegId and Email entered by User in SharedPref
+    private void storeRegIdinSharedPref(String regId) {
+        SharedPreferences prefs = getSharedPreferences("UserDetails",
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(REG_ID, regId);
+        editor.putString(EMAIL_ID, email);
+        editor.commit();
     }
 
     /**
