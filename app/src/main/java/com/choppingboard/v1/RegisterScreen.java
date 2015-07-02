@@ -64,7 +64,7 @@ public class RegisterScreen extends Activity {
                 Intent intent = new Intent(this, RegistrationIntentService.class);
                 intent.putExtra("email", emailID);
                 startService(intent);
-                Intent i = new Intent(applicationContext, SeeScreen.class);
+                Intent i = new Intent(applicationContext, DashBoard.class);
                 // i.putExtra("regId", regId);
                 startActivity(i);
                 finish();
