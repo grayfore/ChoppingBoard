@@ -58,11 +58,15 @@ public class RegisterScreen extends Activity {
 
         LocalBroadcastManager.getInstance(this).registerReceiver(sMessageReceiver,
                 new IntentFilter(QuickstartPreferences.SENT_TOKEN_TO_SERVER));
+        LocalBroadcastManager.getInstance(this).registerReceiver(fMessageReceiver,
+                new IntentFilter(QuickstartPreferences.REGISTRATION_FAILED));
     }
 
         private BroadcastReceiver sMessageReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                Toast.makeText(applicationContext, "Registration successful!",
+                        Toast.LENGTH_LONG).show();
                 // Get extra data included in the Intent
                 Intent i = new Intent(RegisterScreen.this, DashBoard.class);
                 // i.putExtra("regId", regId);
@@ -70,6 +74,16 @@ public class RegisterScreen extends Activity {
                 finish();
             }
         };
+
+    private BroadcastReceiver fMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Toast.makeText(
+                    applicationContext,
+                    "Reg ID Creation Failed.\n\nEither you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time."
+                    , Toast.LENGTH_LONG).show();
+        }
+    };
 
     // When Register Me button is clicked
     public void RegisterUser(View view) {
@@ -217,11 +231,6 @@ public class RegisterScreen extends Activity {
                 finish();
             }
             return false;
-        } else {
-            Toast.makeText(
-                    applicationContext,
-                    "This device supports Play services, App will work normally",
-                    Toast.LENGTH_LONG).show();
         }
         return true;
     }

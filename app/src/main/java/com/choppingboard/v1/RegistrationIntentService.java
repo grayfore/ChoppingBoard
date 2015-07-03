@@ -92,6 +92,8 @@ public class RegistrationIntentService extends IntentService {
             // If an exception happens while fetching the new token or updating our registration data
             // on a third-party server, this ensures that we'll attempt the update at a later time.
             sharedPreferences.edit().putBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false).apply();
+            Intent registrationFailure = new Intent(QuickstartPreferences.REGISTRATION_FAILED);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(registrationFailure);
         }
         // Notify UI that registration has completed, so the progress indicator can be hidden.
         Intent registrationComplete = new Intent(QuickstartPreferences.REGISTRATION_COMPLETE);
@@ -117,17 +119,9 @@ public class RegistrationIntentService extends IntentService {
             Log.d(TAG, e.toString());
         }
         if(executePost(targetUrl, json.toString()).equals("OK")) {
-            Toast.makeText(applicationContext, "Registration successful!",
-                    Toast.LENGTH_LONG).show();
             storeRegIdinSharedPref(token);
             Intent registrationComplete = new Intent(QuickstartPreferences.SENT_TOKEN_TO_SERVER);
             LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
-        }
-        else {
-            Toast.makeText(
-                    applicationContext,
-                    "Reg ID Creation Failed.\n\nEither you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time."
-                            , Toast.LENGTH_LONG).show();
         }
     }
 
