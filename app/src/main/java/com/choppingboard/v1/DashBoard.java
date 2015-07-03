@@ -21,8 +21,8 @@ public class DashBoard extends Activity{
         DashBoard.this.startActivity(intent);
     }
     public void buildScreen(View view){
-        Intent intent = new Intent(DashBoard.this, RegistrationIntentService.class);
-        startService(intent);
+        Intent intent = new Intent(DashBoard.this, BuildScreen.class);
+        DashBoard.this.startActivity(intent);
     }
     public void invoiceScreen(View view){
 
