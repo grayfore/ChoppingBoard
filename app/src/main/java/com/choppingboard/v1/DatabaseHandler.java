@@ -10,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Jeff on 7/1/15.
@@ -28,7 +27,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     static final String ORDER_INFO = "orderInfo";
     public SQLiteDatabase DB;
     // Order information fields
-    private static final String KEY_ID = "Order Number";
+    private static final String KEY_ID = "OrderNumber";
     private static final String Order_Json = "OrderString";
 
     public DatabaseHandler(Context context) {
@@ -38,7 +37,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_ORDER_TABLE = "CREATE TABLE " + ORDER_INFO + "("
-                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + Order_Json + "MEDIUMTEXT," + ")";
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + Order_Json + " MEDIUMTEXT" + ")";
         db.execSQL(CREATE_ORDER_TABLE);
 
     }
@@ -64,8 +64,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Getting All Orders
 
-    public List<JSONObject> getAllOrders() {
-        List<JSONObject> OrderList = new ArrayList<JSONObject>();
+    public ArrayList<JSONObject> getAllOrders() {
+        ArrayList<JSONObject> OrderList = new ArrayList<JSONObject>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + ORDER_INFO;
 
@@ -76,7 +76,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 try{
-                    JSONObject orderinfo = new JSONObject(cursor.getString(0));
+                    JSONObject orderinfo = new JSONObject(cursor.getString(1));
                     OrderList.add(orderinfo);
                 }catch (JSONException e){
                     e.printStackTrace();
@@ -87,15 +87,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // return contact list
         return OrderList;
     }
-    
+
     // Getting contacts Count
     public int getOrderCount() {
         String countQuery = "SELECT  * FROM " + ORDER_INFO;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
-        // return count
         return cursor.getCount();
+
+     //   cursor.close();
+        // return count
 
     }
 
