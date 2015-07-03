@@ -2,17 +2,24 @@ package com.choppingboard.v1;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class RegisterScreen extends Activity {
     ProgressDialog prgDialog;
@@ -48,7 +55,21 @@ public class RegisterScreen extends Activity {
             startActivity(i);
             finish();
         }
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(sMessageReceiver,
+                new IntentFilter(QuickstartPreferences.SENT_TOKEN_TO_SERVER));
     }
+
+        private BroadcastReceiver sMessageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                // Get extra data included in the Intent
+                Intent i = new Intent(RegisterScreen.this, DashBoard.class);
+                // i.putExtra("regId", regId);
+                RegisterScreen.this.startActivity(i);
+                finish();
+            }
+        };
 
     // When Register Me button is clicked
     public void RegisterUser(View view) {
@@ -64,10 +85,6 @@ public class RegisterScreen extends Activity {
                 Intent intent = new Intent(this, RegistrationIntentService.class);
                 intent.putExtra("email", emailID);
                 startService(intent);
-                Intent i = new Intent(applicationContext, DashBoard.class);
-                // i.putExtra("regId", regId);
-                startActivity(i);
-                finish();
 
             }
         }

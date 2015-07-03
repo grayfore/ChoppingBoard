@@ -23,6 +23,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -49,6 +50,7 @@ public class RegistrationIntentService extends IntentService {
     public static final String REG_ID = "regId";
     public static final String EMAIL_ID = "eMailId";
     private String email;
+    private Context applicationContext;
 
     public RegistrationIntentService() {
         super(TAG);
@@ -56,6 +58,7 @@ public class RegistrationIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        applicationContext = getApplicationContext();
         email = intent.getStringExtra("email");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -113,8 +116,19 @@ public class RegistrationIntentService extends IntentService {
             e.printStackTrace();
             Log.d(TAG, e.toString());
         }
-        executePost(targetUrl, json.toString());
-        storeRegIdinSharedPref(token);
+        if(executePost(targetUrl, json.toString()).equals("OK")) {
+            Toast.makeText(applicationContext, "Registration successful!",
+                    Toast.LENGTH_LONG).show();
+            storeRegIdinSharedPref(token);
+            Intent registrationComplete = new Intent(QuickstartPreferences.SENT_TOKEN_TO_SERVER);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
+        }
+        else {
+            Toast.makeText(
+                    applicationContext,
+                    "Reg ID Creation Failed.\n\nEither you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time."
+                            , Toast.LENGTH_LONG).show();
+        }
     }
 
     public static String executePost(String targetURL, String urlParameters) {
