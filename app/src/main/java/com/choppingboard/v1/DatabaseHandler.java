@@ -38,7 +38,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_ORDER_TABLE = "CREATE TABLE " + ORDER_INFO + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + Order_Json + "MEDIUMTEXT" + ")";
+                + Order_Json + " MEDIUMTEXT"
+                + ")";
         db.execSQL(CREATE_ORDER_TABLE);
 
     }
