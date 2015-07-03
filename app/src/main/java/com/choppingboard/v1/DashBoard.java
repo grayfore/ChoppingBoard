@@ -14,6 +14,10 @@ public class DashBoard extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        DatabaseHandler db = new DatabaseHandler(this);
+        db.addOrder("{\"provider\":\"EasyChops\",\"id\":\"EC105\",\"reqtime\":\"05:12 PM\",\"custName\":\"Huiyu Zhang\",\"custNum\":\"4344666077\",\"custAdd\":\"217 B2 Hoxton\"}");
+
     }
 
     public void seeScreen(View view){

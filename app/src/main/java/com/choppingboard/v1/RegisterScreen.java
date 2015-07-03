@@ -43,7 +43,7 @@ public class RegisterScreen extends Activity {
 
         //When Email ID is set in Sharedpref, User will be taken to HomeActivity
         if (!TextUtils.isEmpty(registrationId)) {
-            Intent i = new Intent(applicationContext, SeeScreen.class);
+            Intent i = new Intent(applicationContext, DashBoard.class);
             i.putExtra("regId", registrationId);
             startActivity(i);
             finish();

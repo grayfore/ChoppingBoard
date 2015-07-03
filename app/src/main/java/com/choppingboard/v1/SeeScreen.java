@@ -41,6 +41,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_screen);
 
+        DatabaseHandler db = new DatabaseHandler(this);
 
         // Intent Message sent from Broadcast Receiver
         String str = getIntent().getStringExtra("msg");
@@ -55,7 +56,9 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
                     Toast.LENGTH_LONG).show();
         }
 
+        Log.v("lambogallardo",""+db.getOrderCount());
         orders = new ArrayList<>();
+        orders = db.getAllOrders();
         adapter = new CustomList(SeeScreen.this, orders);
         getListView().setAdapter(adapter);
         mAdapter = new SwipeActionAdapter(adapter);
@@ -77,7 +80,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 //                Toast.makeText(SeeScreen.this, "You clicked on " + orders.get(position), Toast.LENGTH_SHORT).show();
-                pwindow = new com.choppingboard.v1.PopupWindow(SeeScreen.this,orders.get(position));
+                pwindow = new PopupWindow(SeeScreen.this,orders.get(position));
                 pwindow.show(findViewById(R.id.seescreen), 0, 0);
             }
         });
