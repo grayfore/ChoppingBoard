@@ -38,7 +38,7 @@ public class CustomList extends ArrayAdapter<JSONObject>{
             }
             JSONObject  orderlist = getItem(position);
             TextView txtview = (TextView) convertView.findViewById(R.id.price);
-            String price = orderlist.getString("custNum");
+            String price = orderlist.getString("custName");
             txtview.setText(price);
             return convertView;
         }

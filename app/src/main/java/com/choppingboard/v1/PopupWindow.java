@@ -5,7 +5,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,15 +18,17 @@ import org.json.JSONObject;
 public class PopupWindow extends android.widget.PopupWindow
 {
     Context ctx;
-    Button btnDismiss;
+//    Button btnDismiss;
     View popupView;
     TextView orderid;
     TextView ordertime;
     TextView name;
     TextView add;
     TextView custnum;
-    private float x1,x2;
-    static final int MIN_DISTANCE = 150;
+    ImageView acceptbar;
+    ImageView denybar;
+    private float x1,x2,move;
+    static final int MIN_DISTANCE = 180;
 
     public PopupWindow(Context context, JSONObject o)
     {
@@ -35,8 +37,7 @@ public class PopupWindow extends android.widget.PopupWindow
         ctx = context;
         popupView = LayoutInflater.from(context).inflate(R.layout.popup, null);
         setContentView(popupView);
-
-        btnDismiss = (Button)popupView.findViewById(R.id.btn_dismiss);
+//        btnDismiss = (Button)popupView.findViewById(R.id.btn_dismiss);
         orderid = (TextView)popupView.findViewById(R.id.orderid);
         ordertime = (TextView)popupView.findViewById(R.id.ordertime);
         name = (TextView)popupView.findViewById(R.id.name);
@@ -55,63 +56,71 @@ public class PopupWindow extends android.widget.PopupWindow
 
 
 
-        setHeight(1600);
-        setWidth(800);
+        setHeight(850);
+        setWidth(550);
 
         // Closes the popup window when touch outside of it - when looses focus
         setOutsideTouchable(true);
         setFocusable(true);
 
-        // Removes default black background
-//        setBackgroundDrawable(new BitmapDrawable());
+            TextDrawable back = new TextDrawable();
+            setBackgroundDrawable(back);
 
-        btnDismiss.setOnClickListener(new Button.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }});
+//        btnDismiss.setOnClickListener(new Button.OnClickListener(){
+//
+//            @Override
+//            public void onClick(View v) {
+//                dismiss();
+//            }});
 
         // Closes the popup window when touch it
      this.setTouchInterceptor(new View.OnTouchListener() {
 
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
+         @Override
+         public boolean onTouch(View v, MotionEvent event) {
 
-            switch(event.getAction())
-            {
-                case MotionEvent.ACTION_DOWN:
-                    x1 = event.getX();
-                    break;
-                case MotionEvent.ACTION_UP:
-                    x2 = event.getX();
-                    float deltaX = x2 - x1;
+             switch (event.getAction()) {
+                 case MotionEvent.ACTION_DOWN:
+                     x1 = event.getX();
+                     break;
+                 case MotionEvent.ACTION_UP:
+                     x2 = event.getX();
+                     float deltaX = x2 - x1;
+                     if (Math.abs(deltaX) > MIN_DISTANCE) {
+                         // Left to Right swipe action
+                         if (x2 > x1) {
+                             Toast.makeText(ctx, "Left to Right swipe [Next]", Toast.LENGTH_SHORT).show();
+                         }
 
-                    if (Math.abs(deltaX) > MIN_DISTANCE)
-                    {
-                        // Left to Right swipe action
-                        if (x2 > x1)
-                        {
-                            Toast.makeText(ctx, "Left to Right swipe [Next]", Toast.LENGTH_SHORT).show ();
-                        }
+                         // Right to left swipe action
+                         else {
+                             Toast.makeText(ctx, "Right to Left swipe [Previous]", Toast.LENGTH_SHORT).show();
+                         }
 
-                        // Right to left swipe action
-                        else
-                        {
-                            Toast.makeText(ctx, "Right to Left swipe [Previous]", Toast.LENGTH_SHORT).show ();
-                        }
+                     } else {
+                         // consider as something else - a screen tap for example
+                         dismiss();
+                     }
+                     break;
+             }
 
-                    }
-                    else
-                    {
-                        // consider as something else - a screen tap for example
-                        dismiss();
-                    }
-                    break;
-            }
-            return true;
-        }
-    });
+             move = event.getX();
+             popupView.setX(move - x1);
+             if (popupView.getX() > 150) {
+                 popupView.setX(150);
+             }
+             if (popupView.getX() < -150) {
+                 popupView.setX(-150);
+             }
+             if(event.getAction() == MotionEvent.ACTION_UP){
+                 popupView.setX(0);
+             }
+
+             return true;
+         }
+     });
+
+
     } // End constructor
 
     // Attaches the view to its parent anchor-view at position x and y
