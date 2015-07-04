@@ -20,7 +20,7 @@ public class GCMNotificationIntentService extends IntentService {
     // Sets an ID for the notification, so it can be updated
     public static final int notifyID = 9001;
     NotificationCompat.Builder builder;
-
+    DatabaseHandler db;
     public GCMNotificationIntentService() {
         super("GcmIntentService");
     }
@@ -49,10 +49,12 @@ public class GCMNotificationIntentService extends IntentService {
     }
 
     private void sendNotification(String msg) {
+        // If the See screen is not open, it will take you to that activity
         if(!SeeScreen.active){
             Intent resultIntent = new Intent(this, SeeScreen.class);
-            resultIntent.putExtra("msg", msg);
-
+//            resultIntent.putExtra("msg", msg);
+            db = new DatabaseHandler(this);
+            db.addOrder(msg);
             PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0,
                     resultIntent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -82,6 +84,7 @@ public class GCMNotificationIntentService extends IntentService {
             // Post a notification
             mNotificationManager.notify(notifyID, mNotifyBuilder.build());
         }
+        // If the See screen is already open, then this will just add things to existing screen
         else{
             Intent resultIntent = new Intent("order");
             resultIntent.putExtra("msg", msg);

@@ -18,12 +18,16 @@ import java.util.ArrayList;
 public class CustomList extends ArrayAdapter<JSONObject>{
 
     private final Activity context;
-    private final ArrayList<JSONObject> orders;
+    private ArrayList<JSONObject> orders;
+    private ArrayList<String> ordernums;
+    DatabaseHandler db;
 
-    public CustomList(Activity context, ArrayList<JSONObject> orders) {
+    public CustomList(Activity context, ArrayList<JSONObject> orders, ArrayList<String> ordernums) {
         super(context, R.layout.customlist, orders);
         this.context = context;
         this.orders = orders;
+        this.ordernums = ordernums;
+        db = new DatabaseHandler(this.context);
 
     }
 
@@ -39,13 +43,27 @@ public class CustomList extends ArrayAdapter<JSONObject>{
             JSONObject  orderlist = getItem(position);
             TextView txtview = (TextView) convertView.findViewById(R.id.price);
             String price = orderlist.getString("custName");
+            TextView num = (TextView)convertView.findViewById(R.id.number);
+//            int thinger = db.getNumber(orderlist.toString());
+//            Log.v("bobobo", "" + thinger);
+            num.setText(ordernums.get(position));
             txtview.setText(price);
             return convertView;
+
         }
         catch(Exception e)
         {
         }
         return null;
+    }
+
+    //Used to update the list view when new info is added
+    public void updateList(ArrayList<JSONObject> a, ArrayList<String> b) {
+        orders.clear();
+        ordernums.clear();
+        orders.addAll(a);
+        ordernums.addAll(b);
+        this.notifyDataSetChanged();
     }
 
 }

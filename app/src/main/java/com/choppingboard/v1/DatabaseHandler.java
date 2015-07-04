@@ -64,11 +64,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // Getting All Orders
-
     public ArrayList<JSONObject> getAllOrders() {
         ArrayList<JSONObject> OrderList = new ArrayList<JSONObject>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + ORDER_INFO;
+        String selectQuery = "SELECT  * FROM " + ORDER_INFO + " ORDER BY " +KEY_ID + " DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -88,7 +87,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // return contact list
         return OrderList;
     }
-    
+
+    //Getting all order numbers to use in listview
+    public ArrayList<String> getAllNums() {
+        ArrayList<String> OrderList = new ArrayList<String>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + ORDER_INFO + " ORDER BY " +KEY_ID + " DESC";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                String num = cursor.getString(0);
+                OrderList.add(num);
+                // Adding contact to list
+            } while (cursor.moveToNext());
+        }
+        // return contact list
+        return OrderList;
+    }
+
+
     // Getting contacts Count
     public int getOrderCount() {
         String countQuery = "SELECT  * FROM " + ORDER_INFO;
