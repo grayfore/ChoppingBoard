@@ -102,7 +102,9 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
             Log.d("receiver", "Got message: " + message);
             if (message != null) {
                 db.addOrder(message);
-                adapter.updateList(db.getAllOrders(),db.getAllNums());
+                ArrayList<JSONObject> one = db.getAllOrders();
+                ArrayList<String> two = db.getAllNums();
+                adapter.updateList(one,two);
             }
         }
     };
