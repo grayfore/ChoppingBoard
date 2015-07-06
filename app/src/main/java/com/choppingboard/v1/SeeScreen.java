@@ -187,11 +187,22 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
         return super.onOptionsItemSelected(item);
     }
 
+    //controls if an item is swipable or not
     @Override
     public boolean hasActions(int i) {
-        return true;
+        Boolean answer = true;
+//        try{
+//            JSONObject buffer = new JSONObject(mAdapter.getItem(i).toString());
+//            if(buffer.getString("paymentMode").equals("null")){
+//                answer = false;
+//            }
+//        }catch (JSONException e){
+//            e.printStackTrace();
+//        }
+        return answer;
     }
 
+    // return true if you want the item to be dismissed, false if you want to keep it
     @Override
     public boolean shouldDismiss(int i, int i1) {
         return false;
@@ -203,13 +214,13 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
         checkPlayServices();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(this,DashBoard.class);
-        SeeScreen.this.startActivity(intent);
-        SeeScreen.this.finish();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        Intent intent = new Intent(this,DashBoard.class);
+//        SeeScreen.this.startActivity(intent);
+//        SeeScreen.this.finish();
+//    }
 
     @Override
     protected void onDestroy() {

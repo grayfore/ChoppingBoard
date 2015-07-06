@@ -1,6 +1,7 @@
 package com.choppingboard.v1;
 
 import android.content.Context;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 /**
  * Created by Jeff on 6/29/15.
@@ -32,8 +34,11 @@ public class PopupWindow extends android.widget.PopupWindow
     ImageView denybar;
     ScrollView sv;
     TableLayout table;
-    private float x1,x2,move;
+    private float x1,x2,move,y1,y2,scroll,scrollh;
     static final int MIN_DISTANCE = 180;
+    private GestureDetector gestureDetector;
+    View.OnTouchListener gestureListener;
+    boolean twist = true;
 
     public PopupWindow(Context context, JSONObject o)
     {
@@ -58,27 +63,26 @@ public class PopupWindow extends android.widget.PopupWindow
             add.setText("Address: " + o.getString("custAdd"));
             custnum.setText("Number: " + o.getString("custNum"));
 
-            for(int i = 1; i <= 20; i++) {
+            for(int i = 1; i <= 10; i++) {
                 if(o.getString("OrderItem" + i) != null){
                     String orderItem = o.getString("OrderItem" + i);
                     JSONObject orderitem = new JSONObject(orderItem);
                     // Inflate your row "template" and fill out the fields.
                     TableRow row = (TableRow) LayoutInflater.from(ctx).inflate(R.layout.attrib_row, null);
                     ((TextView) row.findViewById(R.id.attrib_name)).setText(orderitem.getString("MenuItem"));
-                    ((TextView) row.findViewById(R.id.attrib_value)).setText(orderitem.getString("Price"));
+                    ((TextView) row.findViewById(R.id.attrib_value)).setText("$"+orderitem.getString("Price"));
                     table.addView(row);
 
                     if(!orderitem.getString("Extras").equals("[null]")){
                         TableRow extra = (TableRow) LayoutInflater.from(ctx).inflate(R.layout.extra_row, null);
                         String thing = orderitem.getString("Extras");
-                        thing.replace("[", "").replace("\"", "").replace("]", "");
                         String[] array = thing.split(",");
                         String stuff = "";
                         for(int j = 0; j < array.length; j++){
                             stuff += (j+1) + ": " + array[j] + "\n";
                         }
-                        stuff.replace("[", "lol").replace("\"", "lol").replace("]", "lol");
-                        ((TextView) extra.findViewById(R.id.attrib_name)).setText(stuff);
+                        String newstuff = stuff.replace("[", "").replace("\"", "").replace("]", "");
+                        ((TextView) extra.findViewById(R.id.attrib_name)).setText(newstuff);
                         table.addView(extra);
                     }
                 }
@@ -87,6 +91,28 @@ public class PopupWindow extends android.widget.PopupWindow
             e.printStackTrace();
         }
 
+        //this is in a different try-catch because it doesnt work when its in the other one for some reason
+        try{
+            TableRow deliv = (TableRow) LayoutInflater.from(ctx).inflate(R.layout.total_row, null);
+            ((TextView) deliv.findViewById(R.id.attrib_name)).setText("Delivery Charge: ");
+            ((TextView) deliv.findViewById(R.id.attrib_value)).setText("$" + o.getString("delivCharge"));
+
+            TableRow tax = (TableRow) LayoutInflater.from(ctx).inflate(R.layout.total_row, null);
+            ((TextView) tax.findViewById(R.id.attrib_name)).setText("Tax: ");
+            ((TextView) tax.findViewById(R.id.attrib_value)).setText("$" + o.getString("salesTax"));
+            tax.setPadding(0,0,0,0);
+
+            TableRow total = (TableRow) LayoutInflater.from(ctx).inflate(R.layout.total_row, null);
+            ((TextView) total.findViewById(R.id.attrib_name)).setText("Subtotal: ");
+            ((TextView) total.findViewById(R.id.attrib_value)).setText("$" + o.getString("subtotal"));
+            total.setPadding(0,0,0,0);
+
+            table.addView(deliv);
+            table.addView(tax);
+            table.addView(total);
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
 
 
         setHeight(850);
@@ -111,15 +137,18 @@ public class PopupWindow extends android.widget.PopupWindow
 
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-
+//                    scrollh = sv.getScrollY();
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             x1 = event.getX();
+                            y1 = event.getY();
                             break;
                         case MotionEvent.ACTION_UP:
                             x2 = event.getX();
+                            y2 = event.getY();
+//                            scrollh = sv.getScrollY();
                             float deltaX = x2 - x1;
-                            if (Math.abs(deltaX) > MIN_DISTANCE) {
+                            if (Math.abs(deltaX) > MIN_DISTANCE && twist) {
                                 // Left to Right swipe action
                                 if (x2 > x1) {
                                     Toast.makeText(ctx, "Left to Right swipe [Next]", Toast.LENGTH_SHORT).show();
@@ -134,17 +163,32 @@ public class PopupWindow extends android.widget.PopupWindow
                             break;
                     }
 
-                    move = event.getX();
-                    popupView.setX(move - x1);
-                    if (popupView.getX() > 120) {
-                        popupView.setX(120);
+                    if(twist) {
+                        move = event.getX();
+                            popupView.setX(move - x1);
+                        if (popupView.getX() > 120) {
+                            popupView.setX(120);
+                        }
+                        if (popupView.getX() < -100) {
+                            popupView.setX(-100);
+                        }
                     }
-                    if (popupView.getX() < -100) {
-                        popupView.setX(-100);
+                    scroll = event.getY();
+                    int amount = (int)(y1 - scroll);
+                    sv.scrollTo(0, (int) (scrollh + amount));
+                    if(Math.abs(amount) > 40){
+                        twist = false;
+                        popupView.setX(0);
+                    }else{
+                        twist = true;
                     }
+
                     if (event.getAction() == MotionEvent.ACTION_UP) {
                         popupView.setX(0);
+                        scrollh = sv.getScrollY();
                     }
+
+
 
                     return true;
                 }
@@ -200,4 +244,7 @@ public class PopupWindow extends android.widget.PopupWindow
     {
         showAtLocation(anchor, Gravity.CENTER, x, y);
     }
+
 }
+
+
