@@ -40,12 +40,11 @@
         </receiver>
 
         <service android:name=".GCMNotificationIntentService" />
-
         <service android:name=".RegistrationIntentService" />
 
-
-        <activity android:name=".SplashActivity"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".SplashActivity"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -55,25 +54,34 @@
         <activity
             android:name=".DashBoard"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".SeeScreen"
             android:label="@string/title_activity_see_screen"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".BuildScreen"
             android:label="@string/title_activity_build_screen"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".RegisterScreen"
-            android:label="@string/app_name" android:noHistory="true"
-            android:screenOrientation="portrait">
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".CusCreateScreen"
+            android:label="@string/title_activity_cus_create_screen"
+            android:parentActivityName=".BuildScreen" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.choppingboard.v1.BuildScreen" />
         </activity>
     </application>
 

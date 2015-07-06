@@ -45,5 +45,6 @@
     <string name="msg_title">Message</string>
     <string name="user_title">Hello User</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_cus_create_screen">CusCreateScreen</string>
 
 </resources>

@@ -50,7 +50,6 @@ public class RegistrationIntentService extends IntentService {
     public static final String REG_ID = "regId";
     public static final String EMAIL_ID = "eMailId";
     private String email;
-    private Context applicationContext;
 
     public RegistrationIntentService() {
         super(TAG);
@@ -58,7 +57,6 @@ public class RegistrationIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        applicationContext = getApplicationContext();
         email = intent.getStringExtra("email");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -123,9 +121,15 @@ public class RegistrationIntentService extends IntentService {
             Intent registrationComplete = new Intent(QuickstartPreferences.SENT_TOKEN_TO_SERVER);
             LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
         }
+        else {
+            Intent registrationFailure = new Intent(QuickstartPreferences.REGISTRATION_FAILED);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(registrationFailure);
+        }
     }
 
     public static String executePost(String targetURL, String urlParameters) {
+        if(urlParameters.equals(null))
+            return null;
         URL url;
         HttpURLConnection urlConnection = null;
         try {
