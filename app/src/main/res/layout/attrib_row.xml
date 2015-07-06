@@ -7,7 +7,7 @@
         android:id="@+id/attrib_name"
         android:layout_width="0dp"
         android:layout_weight=".75"
-        android:textSize="100dp"
+        android:textSize="25dp"
         android:textColor="@color/black"/>
     <TextView
         android:id="@+id/attrib_value"

@@ -165,7 +165,9 @@ public class PopupWindow extends android.widget.PopupWindow
 
                     if(twist) {
                         move = event.getX();
+                        if((Math.abs(move -x1) > 12)) {
                             popupView.setX(move - x1);
+                        }
                         if (popupView.getX() > 120) {
                             popupView.setX(120);
                         }

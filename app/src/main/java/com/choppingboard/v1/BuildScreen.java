@@ -1,20 +1,11 @@
 package com.choppingboard.v1;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 
 public class BuildScreen extends Activity {
@@ -29,9 +20,9 @@ public class BuildScreen extends Activity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    Intent i = new Intent(BuildScreen.this, CusCreateScreen.class);
-                    i.putExtra("phoneNumber", v.getText().toString());
-                    BuildScreen.this.startActivity(i);
+//                    Intent i = new Intent(BuildScreen.this, CusCreateScreen.class);
+//                    i.putExtra("phoneNumber", v.getText().toString());
+//                    BuildScreen.this.startActivity(i);
                     handled = true;
                 }
                 return handled;
@@ -39,12 +30,12 @@ public class BuildScreen extends Activity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(this,DashBoard.class);
-        BuildScreen.this.startActivity(intent);
-        BuildScreen.this.finish();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        Intent intent = new Intent(this,DashBoard.class);
+//        BuildScreen.this.startActivity(intent);
+//        BuildScreen.this.finish();
+//    }
 
 }
