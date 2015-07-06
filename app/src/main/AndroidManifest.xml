@@ -59,12 +59,20 @@
         <activity
             android:name=".SeeScreen"
             android:label="@string/title_activity_see_screen"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:parentActivityName=".DashBoard" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.choppingboard.v1.DashBoard" />
         </activity>
         <activity
             android:name=".BuildScreen"
             android:label="@string/title_activity_build_screen"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:parentActivityName=".DashBoard" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.choppingboard.v1.DashBoard" />
         </activity>
         <activity
             android:name=".RegisterScreen"
