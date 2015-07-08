@@ -1,6 +1,7 @@
 package com.choppingboard.v1;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
@@ -20,9 +21,9 @@ public class BuildScreen extends Activity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-//                    Intent i = new Intent(BuildScreen.this, CusCreateScreen.class);
-//                    i.putExtra("phoneNumber", v.getText().toString());
-//                    BuildScreen.this.startActivity(i);
+                    Intent i = new Intent(BuildScreen.this, CusCreateScreen.class);
+                    i.putExtra("phoneNumber", v.getText().toString());
+                    BuildScreen.this.startActivity(i);
                     handled = true;
                 }
                 return handled;
