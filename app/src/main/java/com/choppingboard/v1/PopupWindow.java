@@ -1,6 +1,7 @@
 package com.choppingboard.v1;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,15 +36,18 @@ public class PopupWindow extends android.widget.PopupWindow
     ScrollView sv;
     TableLayout table;
     private float x1,x2,move,y1,y2,scroll,scrollh;
-    static final int MIN_DISTANCE = 180;
+    static final int MIN_DISTANCE = 120;
     private GestureDetector gestureDetector;
     View.OnTouchListener gestureListener;
     boolean twist = true;
+    View deny;
+    PopupDeny pd;
 
-    public PopupWindow(Context context, JSONObject o)
+    public PopupWindow(Context context, final JSONObject o, View v)
     {
         super(context);
 
+        deny = v;
         ctx = context;
         popupView = LayoutInflater.from(context).inflate(R.layout.popup, null);
         setContentView(popupView);
@@ -157,6 +161,8 @@ public class PopupWindow extends android.widget.PopupWindow
                                 // Right to left swipe action
                                 else {
                                     Toast.makeText(ctx, "Right to Left swipe [Previous]", Toast.LENGTH_SHORT).show();
+                                    dismiss();
+                                    openDeny(o);
                                 }
 
                             }
@@ -190,54 +196,9 @@ public class PopupWindow extends android.widget.PopupWindow
                         scrollh = sv.getScrollY();
                     }
 
-
-
                     return true;
                 }
             });
-
-//            popupView.setOnTouchListener(new View.OnTouchListener() {
-//                @Override
-//                public boolean onTouch(View v, MotionEvent event) {
-//                    switch (event.getAction()) {
-//                        case MotionEvent.ACTION_DOWN:
-//                            x1 = event.getX();
-//                            break;
-//                        case MotionEvent.ACTION_UP:
-//                            x2 = event.getX();
-//                            float deltaX = x2 - x1;
-//                            if (Math.abs(deltaX) > MIN_DISTANCE) {
-//                                // Left to Right swipe action
-//                                if (x2 > x1) {
-//                                    Toast.makeText(ctx, "Left to Right swipe [Next]", Toast.LENGTH_SHORT).show();
-//                                }
-//
-//                                // Right to left swipe action
-//                                else {
-//                                    Toast.makeText(ctx, "Right to Left swipe [Previous]", Toast.LENGTH_SHORT).show();
-//                                }
-//
-//                            } else {
-//
-//                            }
-//                            break;
-//                    }
-//
-//                    move = event.getX();
-//                    popupView.setX(move - x1);
-//                    if (popupView.getX() > 120) {
-//                        popupView.setX(120);
-//                    }
-//                    if (popupView.getX() < -100) {
-//                        popupView.setX(-100);
-//                    }
-//                    if (event.getAction() == MotionEvent.ACTION_UP) {
-//                        popupView.setX(0);
-//                    }
-//
-//                    return true;
-//                }
-//            });
 
     } // End constructor
 
@@ -245,6 +206,16 @@ public class PopupWindow extends android.widget.PopupWindow
     public void show(View anchor, int x, int y)
     {
         showAtLocation(anchor, Gravity.CENTER, x, y);
+    }
+
+    public void openDeny(JSONObject o){
+        pd = new PopupDeny(ctx, o);
+        pd.show(deny, 0, 0);
+        Log.v("lambo", "Reached making a popup");
+    }
+
+    public PopupDeny getPd(){
+        return pd;
     }
 
 }
