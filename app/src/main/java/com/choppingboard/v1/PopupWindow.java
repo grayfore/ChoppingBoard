@@ -1,6 +1,7 @@
 package com.choppingboard.v1;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -42,6 +43,8 @@ public class PopupWindow extends android.widget.PopupWindow
     boolean twist = true;
     View deny;
     PopupDeny pd;
+    private static final String TAG = "PopupWindow";
+
 
     public PopupWindow(Context context, final JSONObject o, View v)
     {
@@ -156,6 +159,14 @@ public class PopupWindow extends android.widget.PopupWindow
                                 // Left to Right swipe action
                                 if (x2 > x1) {
                                     Toast.makeText(ctx, "Left to Right swipe [Next]", Toast.LENGTH_SHORT).show();
+                                    try {
+                                        Intent intent = new Intent(ctx, UpdateStatus.class);
+                                        intent.putExtra("orderId", o.getString("id"));
+                                        intent.putExtra("status", ""+22);
+                                        ctx.startService(intent);
+                                    }catch(JSONException e){
+                                        e.printStackTrace();
+                                    }
                                 }
 
                                 // Right to left swipe action
@@ -217,6 +228,7 @@ public class PopupWindow extends android.widget.PopupWindow
     public PopupDeny getPd(){
         return pd;
     }
+
 
 }
 

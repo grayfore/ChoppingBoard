@@ -214,13 +214,11 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
         checkPlayServices();
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//        Intent intent = new Intent(this,DashBoard.class);
-//        SeeScreen.this.startActivity(intent);
-//        SeeScreen.this.finish();
-//    }
+    @Override
+    protected void onPause(){
+        super.onPause();
+        pwindow.dismiss();
+    }
 
     @Override
     protected void onDestroy() {
