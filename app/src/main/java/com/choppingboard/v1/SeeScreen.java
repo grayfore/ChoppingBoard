@@ -83,7 +83,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 //                Toast.makeText(SeeScreen.this, "You clicked on " + orders.get(position), Toast.LENGTH_SHORT).show();
-                pwindow = new PopupWindow(SeeScreen.this, orders.get(position));
+                pwindow = new PopupWindow(SeeScreen.this, orders.get(position),findViewById(R.id.seescreen));
                 pwindow.show(findViewById(R.id.seescreen), 0, 0);
             }
         });
@@ -214,13 +214,11 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
         checkPlayServices();
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//        Intent intent = new Intent(this,DashBoard.class);
-//        SeeScreen.this.startActivity(intent);
-//        SeeScreen.this.finish();
-//    }
+    @Override
+    protected void onPause(){
+        super.onPause();
+        pwindow.dismiss();
+    }
 
     @Override
     protected void onDestroy() {
@@ -240,5 +238,25 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
     public void onStop() {
         super.onStop();
         active = false;
+    }
+
+    public void reasonuno(View view){
+        Log.v("Buttonone", "Hello There");
+        pwindow.getPd().dismiss();
+    }
+
+    public void reasondos(View view){
+        Log.v("Buttontwo", "Hello There");
+        pwindow.getPd().dismiss();
+    }
+
+    public void reasontres(View view){
+        Log.v("Buttonthree", "Hello There");
+        pwindow.getPd().dismiss();
+    }
+
+    public void reasoncuatro(View view){
+        Log.v("Buttonfour", "Hello There");
+        pwindow.getPd().dismiss();
     }
 }

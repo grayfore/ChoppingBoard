@@ -41,6 +41,7 @@
 
         <service android:name=".GCMNotificationIntentService" />
         <service android:name=".RegistrationIntentService" />
+        <service android:name=".UpdateStatus"/>
 
         <activity
             android:name=".SplashActivity"

@@ -31,8 +31,9 @@
     <color name="red">#FF0000</color>
     <color name="green">#00FF00</color>
     <color name="yellow">#FFFF00</color>
-    <string name="title_activity_see_screen">SeeScreen</string>
+    <color name="transp">#80000000</color>
 
+    <string name="title_activity_see_screen">SeeScreen</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_build_screen">Build Screen</string>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@color/transp">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="50dp"
+        android:text="Reason for deny"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:layout_marginTop="40dp"
+        />
+
+    <Button
+        android:id="@+id/one"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:layout_above="@+id/aline"
+        android:layout_toLeftOf="@id/aline"
+        android:layout_margin="40dp"
+        android:text="Reason 1"
+        android:onClick="reasonuno"/>
+    <Button
+        android:id="@+id/two"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:layout_above="@+id/aline"
+        android:layout_toRightOf="@id/aline"
+        android:layout_margin="40dp"
+        android:text="Reason 2"
+        android:onClick="reasondos"/>
+    <Button
+        android:id="@+id/three"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:layout_below="@id/aline"
+        android:layout_toLeftOf="@id/aline"
+        android:layout_margin="40dp"
+        android:text="Reason 3"
+        android:onClick="reasontres"/>
+    <Button
+        android:id="@+id/four"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:layout_below="@id/aline"
+        android:layout_toRightOf="@id/aline"
+        android:layout_margin="40dp"
+        android:text="Reason 4"
+        android:onClick="reasoncuatro"/>
+
+    <TextView
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:id="@+id/aline"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>
