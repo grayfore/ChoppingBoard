@@ -6,13 +6,20 @@
     <TextView
         android:id="@+id/attrib_name"
         android:layout_width="0dp"
-        android:layout_weight=".75"
+        android:layout_weight=".70"
         android:textSize="25dp"
         android:textColor="@color/black"/>
     <TextView
         android:id="@+id/attrib_value"
         android:layout_width="0dp"
-        android:layout_weight=".25"
+        android:layout_weight=".20"
         android:textSize="25dp"
         android:textColor="@color/black"/>
+    <TextView
+        android:id="@+id/quantity"
+        android:layout_width="0dp"
+        android:layout_weight=".1"
+        android:textSize="25dp"
+        android:textColor="@color/black"
+        />
 </TableRow>

@@ -78,6 +78,7 @@ public class PopupWindow extends android.widget.PopupWindow {
                     TableRow row = (TableRow) LayoutInflater.from(ctx).inflate(R.layout.attrib_row, null);
                     ((TextView) row.findViewById(R.id.attrib_name)).setText(orderitem.getString("MenuItem"));
                     ((TextView) row.findViewById(R.id.attrib_value)).setText("$" + orderitem.getString("Price"));
+                    ((TextView) row.findViewById(R.id.quantity)).setText("x" + orderitem.getString("Quantity"));
                     table.addView(row);
 
                     if (!orderitem.getString("Extras").equals("[null]")) {
