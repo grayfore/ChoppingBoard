@@ -20,13 +20,15 @@ public class CustomList extends ArrayAdapter<JSONObject>{
     private final Activity context;
     private ArrayList<JSONObject> orders;
     private ArrayList<String> ordernums;
+    private ArrayList<String> listOfStatus;
     DatabaseHandler db;
 
-    public CustomList(Activity context, ArrayList<JSONObject> orders, ArrayList<String> ordernums) {
+    public CustomList(Activity context, ArrayList<JSONObject> orders, ArrayList<String> ordernums, ArrayList<String> listOfStatus) {
         super(context, R.layout.customlist, orders);
         this.context = context;
         this.orders = orders;
         this.ordernums = ordernums;
+        this.listOfStatus = listOfStatus;
         db = new DatabaseHandler(this.context);
 
     }
@@ -48,6 +50,8 @@ public class CustomList extends ArrayAdapter<JSONObject>{
 //            Log.v("bobobo", "" + thinger);
             num.setText(ordernums.get(position));
             txtview.setText(price);
+            TextView status = (TextView)convertView.findViewById(R.id.status);
+            status.setText(listOfStatus.get(position));
             return convertView;
 
         }

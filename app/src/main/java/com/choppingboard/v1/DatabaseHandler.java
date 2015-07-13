@@ -33,6 +33,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String CUS_KEY_ID = "OrderNumber";
     private static final String Order_Json = "OrderString";
     private static final String Customer_Json = "OrderString";
+    private static final String Status = "Status";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -41,9 +42,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_ORDER_TABLE = "CREATE TABLE " + ORDER_INFO + "("
-                + ORD_KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + Order_Json + " MEDIUMTEXT"
-                + ")";
+                + ORD_KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + Order_Json + " MEDIUMTEXT, "
+                + Status + " TEXT "
+                + ");";
         String CREATE_CUSTOMER_TABLE = "CREATE TABLE " + CUSTOMER_INFO + "("
                 + CUS_KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + Customer_Json + " MEDIUMTEXT"
@@ -68,6 +70,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Order_Json, str); // order json
+        values.put(Status, "0");
         // Inserting Row
         db.insert(ORDER_INFO, null, values);
         db.close(); // Closing database connection
@@ -96,6 +99,53 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         db.update(CUSTOMER_INFO, values, whereClause, null);
         db.close();
+    }
+
+    //updating a status
+    public void updateStatus(String str, String newStat){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Status, newStat);
+        db.update(ORDER_INFO, values, ORD_KEY_ID + " = '" + str + "'", null);
+        db.close();
+    }
+
+    public String getStatus(String str){
+        String answer = "";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = "SELECT  * FROM " + ORDER_INFO + " WHERE " + ORD_KEY_ID + " = '" + str + "'";
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                answer = cursor.getString(2);
+            } while (cursor.moveToNext());
+        }
+
+        return answer;
+
+    }
+
+    // Getting All status
+    public ArrayList<String> getAllStatus() {
+        ArrayList<String> OrderList = new ArrayList<String>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + ORDER_INFO + " ORDER BY " +ORD_KEY_ID + " DESC";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                    String orderinfo = cursor.getString(2);
+                    OrderList.add(orderinfo);
+                // Adding contact to list
+            } while (cursor.moveToNext());
+        }
+        // return contact list
+        return OrderList;
     }
 
     // Getting All Orders

@@ -1,7 +1,6 @@
 package com.choppingboard.v1;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -78,8 +77,8 @@ public class CusCreateScreen extends Activity {
             }
             db.addCustomer(jCustomer.toString());
         }
-        Intent i = new Intent(CusCreateScreen.this, ResMenuActivity.class);
-        CusCreateScreen.this.startActivity(i);
+//        Intent i = new Intent(CusCreateScreen.this, ResMenuActivity.class);
+//        CusCreateScreen.this.startActivity(i);
     }
 
     private void checkCustomerEdited(JSONObject inCustomer, ArrayList<JSONObject> inCustomers) {

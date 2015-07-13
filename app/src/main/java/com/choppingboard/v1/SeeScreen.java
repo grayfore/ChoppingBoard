@@ -19,6 +19,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.wdullaer.swipeactionadapter.SwipeActionAdapter;
 import com.wdullaer.swipeactionadapter.SwipeDirections;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
     Context c;
     ArrayList<JSONObject> orders;
     ArrayList<String> ordernums;
+    ArrayList<String> listOfStatus;
     DatabaseHandler db;
 
     static boolean active = false;
@@ -56,11 +58,13 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
 
         //Create the list view using Arraylist pulled from Database
         Log.v("lambogallardo",""+db.getOrderCount());
+        listOfStatus = new ArrayList<>();
         ordernums = new ArrayList<>();
         orders = new ArrayList<>();
         ordernums = db.getAllNums();
         orders = db.getAllOrders();
-        adapter = new CustomList(SeeScreen.this, orders,ordernums);
+        listOfStatus = db.getAllStatus();
+        adapter = new CustomList(SeeScreen.this, orders,ordernums, listOfStatus);
         getListView().setAdapter(adapter);
 
         // madapter is used for the swiping in listview
@@ -83,7 +87,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 //                Toast.makeText(SeeScreen.this, "You clicked on " + orders.get(position), Toast.LENGTH_SHORT).show();
-                pwindow = new PopupWindow(SeeScreen.this, orders.get(position),findViewById(R.id.seescreen));
+                pwindow = new PopupWindow(SeeScreen.this, orders.get(position),findViewById(R.id.seescreen), ordernums.get(position));
                 pwindow.show(findViewById(R.id.seescreen), 0, 0);
             }
         });
@@ -125,9 +129,27 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
                     break;
                 case SwipeDirections.DIRECTION_FAR_RIGHT:
                     dir = "Far right";
+                    try {
+                        Intent intent = new Intent(SeeScreen.this, UpdateStatus.class);
+                        intent.putExtra("orderId", orders.get(position).getString("id"));
+                        intent.putExtra("status", "" + 4);
+                        intent.putExtra("ordKeyId", ordernums.get(position));
+                        SeeScreen.this.startService(intent);
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
                     break;
                 case SwipeDirections.DIRECTION_NORMAL_RIGHT:
                     dir = "Right";
+                    try {
+                        Intent intent = new Intent(SeeScreen.this, UpdateStatus.class);
+                        intent.putExtra("orderId", orders.get(position).getString("id"));
+                        intent.putExtra("status", "" + 4);
+                        intent.putExtra("ordKeyId", ordernums.get(position));
+                        SeeScreen.this.startService(intent);
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
                     break;
             }
             Toast.makeText(

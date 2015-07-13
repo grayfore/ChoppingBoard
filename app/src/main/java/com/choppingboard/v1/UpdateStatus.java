@@ -22,6 +22,8 @@ public class UpdateStatus extends IntentService {
     private static final String TAG = "UpdateStatus";
     private String orderId;
     private String status;
+    private String ordKeyId;
+    DatabaseHandler db;
 
     public UpdateStatus() {
         super(TAG);
@@ -29,8 +31,12 @@ public class UpdateStatus extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        db = new DatabaseHandler(this);
         orderId = intent.getStringExtra("orderId");
         status = intent.getStringExtra("status");
+        ordKeyId = intent.getStringExtra("ordKeyId");
+        db.updateStatus(ordKeyId, status);
+
         String targetUrl = "http://choppingboard.comuf.com/status.php";
         JSONObject json = new JSONObject();
         try {
