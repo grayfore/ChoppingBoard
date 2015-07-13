@@ -60,8 +60,8 @@
         <activity
             android:name=".SeeScreen"
             android:label="@string/title_activity_see_screen"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".DashBoard" >
+            android:parentActivityName=".DashBoard"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.choppingboard.v1.DashBoard" />
@@ -69,8 +69,8 @@
         <activity
             android:name=".BuildScreen"
             android:label="@string/title_activity_build_screen"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".DashBoard" >
+            android:parentActivityName=".DashBoard"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.choppingboard.v1.DashBoard" />
@@ -91,6 +91,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.choppingboard.v1.BuildScreen" />
+        </activity>
+        <activity
+            android:name=".ResMenuActivity"
+            android:label="@string/title_activity_res_menu"
+            android:parentActivityName=".CusCreateScreen" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.choppingboard.v1.CusCreateScreen" />
         </activity>
     </application>
 

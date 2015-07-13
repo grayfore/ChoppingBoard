@@ -73,9 +73,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Go to Menu"
-        android:id="@+id/menuButton"
+        android:id="@+id/MenuButton"
         android:layout_below="@+id/addressEdit"
         android:layout_alignStart="@+id/addressEdit"
-        android:layout_marginTop="53dp" />
+        android:layout_marginTop="53dp"
+        android:onClick="MenuButton"/>
 
 </RelativeLayout>
