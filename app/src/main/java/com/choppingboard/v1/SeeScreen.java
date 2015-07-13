@@ -132,7 +132,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
                     try {
                         Intent intent = new Intent(SeeScreen.this, UpdateStatus.class);
                         intent.putExtra("orderId", orders.get(position).getString("id"));
-                        intent.putExtra("status", "" + 4);
+                        intent.putExtra("status", "" + 0);
                         intent.putExtra("ordKeyId", ordernums.get(position));
                         SeeScreen.this.startService(intent);
                     }catch (JSONException e){
@@ -144,7 +144,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
                     try {
                         Intent intent = new Intent(SeeScreen.this, UpdateStatus.class);
                         intent.putExtra("orderId", orders.get(position).getString("id"));
-                        intent.putExtra("status", "" + 4);
+                        intent.putExtra("status", "" + 0);
                         intent.putExtra("ordKeyId", ordernums.get(position));
                         SeeScreen.this.startService(intent);
                     }catch (JSONException e){
@@ -212,15 +212,13 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
     //controls if an item is swipable or not
     @Override
     public boolean hasActions(int i) {
-        Boolean answer = true;
-//        try{
-//            JSONObject buffer = new JSONObject(mAdapter.getItem(i).toString());
-//            if(buffer.getString("paymentMode").equals("null")){
-//                answer = false;
-//            }
-//        }catch (JSONException e){
-//            e.printStackTrace();
-//        }
+        Boolean answer;
+
+        if(listOfStatus.get(i).equals("0")){
+            answer = false;
+        }else {
+            answer = true;
+        }
         return answer;
     }
 
@@ -239,7 +237,9 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
     @Override
     protected void onPause(){
         super.onPause();
-        pwindow.dismiss();
+        if(pwindow != null){
+            pwindow.dismiss();
+        }
     }
 
     @Override

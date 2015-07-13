@@ -170,14 +170,18 @@ public class PopupWindow extends android.widget.PopupWindow {
                                     e.printStackTrace();
                                 }
                             }
-
                             // Right to left swipe action
                             else {
                                 Toast.makeText(ctx, "Right to Left swipe [Previous]", Toast.LENGTH_SHORT).show();
                                 dismiss();
                                 openDeny(o);
                             }
-
+                        }else if(Math.abs(deltaX) > MIN_DISTANCE){
+                            if(x2 > x1){
+                                dismiss();
+                            }else{
+                                dismiss();
+                            }
                         }
                         break;
                 }
