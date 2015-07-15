@@ -1,8 +1,10 @@
 package com.choppingboard.v1;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -76,8 +78,8 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
         setListAdapter(mAdapter);
 
         mAdapter
-//                .addBackground(SwipeDirections.DIRECTION_FAR_LEFT,R.layout.leftswipe)
-//                .addBackground(SwipeDirections.DIRECTION_NORMAL_LEFT,R.layout.leftswipe)
+                .addBackground(SwipeDirections.DIRECTION_FAR_LEFT,R.layout.leftswipe)
+                .addBackground(SwipeDirections.DIRECTION_NORMAL_LEFT,R.layout.leftswipe)
                 .addBackground(SwipeDirections.DIRECTION_FAR_RIGHT, R.layout.rightswipe)
                 .addBackground(SwipeDirections.DIRECTION_NORMAL_RIGHT, R.layout.rightswipe);
 
@@ -119,14 +121,47 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
     public void onSwipe(int[] ints, int[] ints1) {
         for(int i=0;i<ints.length;i++) {
             int direction = ints1[i];
-            int position = ints[i];
+            // CAREFUL ABOUT THE FINAL... DOUBLE CHECK THIS WITH MULTIPLE ENTRIESt
+            final int position = ints[i];
             String dir = "";
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            try {
+                                Intent intent = new Intent(SeeScreen.this, UpdateStatus.class);
+                                intent.putExtra("orderId", orders.get(position).getString("id"));
+                                intent.putExtra("status", "" + 15);
+                                intent.putExtra("ordKeyId", ordernums.get(position));
+                                SeeScreen.this.startService(intent);
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    refreshPage();
+                                }
+                            }, 500);
+                            break;
 
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            //No button clicked
+                            break;
+                    }
+                }
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(SeeScreen.this);
             switch (direction) {
                 case SwipeDirections.DIRECTION_FAR_LEFT:
                     dir = "Far left";
+                    builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
                     break;
                 case SwipeDirections.DIRECTION_NORMAL_LEFT:
+                    builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
                     dir = "Left";
                     break;
                 case SwipeDirections.DIRECTION_FAR_RIGHT:
