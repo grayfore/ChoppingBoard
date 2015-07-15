@@ -36,6 +36,7 @@ public class PopupWindow extends android.widget.PopupWindow {
     TextView name;
     TextView add;
     TextView custnum;
+    ImageView imagestatus;
     ImageView acceptbar;
     ImageView denybar;
     ScrollView sv;
@@ -70,6 +71,7 @@ public class PopupWindow extends android.widget.PopupWindow {
         add = (TextView) popupView.findViewById(R.id.add);
         custnum = (TextView) popupView.findViewById(R.id.custnum);
         table = (TableLayout) popupView.findViewById(R.id.orderItems);
+        imagestatus = (ImageView)popupView.findViewById(R.id.imagestatus);
 
         //defines the size of the actual popup
         setHeight(850);
@@ -99,6 +101,18 @@ public class PopupWindow extends android.widget.PopupWindow {
             name.setText("Name: " + o.getString("custName"));
             add.setText("Address: " + o.getString("custAdd"));
             custnum.setText("Number: " + o.getString("custNum"));
+
+            if(db.getStatus(ordernum).equals("0")){
+                imagestatus.setImageResource(R.drawable.x);
+            }else if(db.getStatus(ordernum).equals("4")){
+                imagestatus.setImageResource(R.drawable.check);
+            }
+            else if(db.getStatus(ordernum).equals("10")){
+                imagestatus.setImageResource(R.drawable.hourglass);
+            }
+            else{
+                imagestatus.setImageResource(R.drawable.colorbg);
+            }
 
             //Then it loops through to get each ordered item....
             for (int i = 1; i <= 10; i++) {
