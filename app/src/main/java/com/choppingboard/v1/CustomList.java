@@ -62,11 +62,15 @@ public class CustomList extends ArrayAdapter<JSONObject>{
     }
 
     //Used to update the list view when new info is added
-    public void updateList(ArrayList<JSONObject> a, ArrayList<String> b) {
+    public void updateList(ArrayList<JSONObject> a, ArrayList<String> b, ArrayList<String> c) {
         orders.clear();
         ordernums.clear();
+        listOfStatus.clear();
+
         orders.addAll(a);
         ordernums.addAll(b);
+        listOfStatus.addAll(c);
+
         this.notifyDataSetChanged();
     }
 

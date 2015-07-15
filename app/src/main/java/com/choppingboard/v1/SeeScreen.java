@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Menu;
@@ -75,8 +76,8 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
         setListAdapter(mAdapter);
 
         mAdapter
-                .addBackground(SwipeDirections.DIRECTION_FAR_LEFT,R.layout.leftswipe)
-                .addBackground(SwipeDirections.DIRECTION_NORMAL_LEFT,R.layout.leftswipe)
+//                .addBackground(SwipeDirections.DIRECTION_FAR_LEFT,R.layout.leftswipe)
+//                .addBackground(SwipeDirections.DIRECTION_NORMAL_LEFT,R.layout.leftswipe)
                 .addBackground(SwipeDirections.DIRECTION_FAR_RIGHT, R.layout.rightswipe)
                 .addBackground(SwipeDirections.DIRECTION_NORMAL_RIGHT, R.layout.rightswipe);
 
@@ -87,7 +88,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 //                Toast.makeText(SeeScreen.this, "You clicked on " + orders.get(position), Toast.LENGTH_SHORT).show();
-                pwindow = new PopupWindow(SeeScreen.this, orders.get(position),findViewById(R.id.seescreen), ordernums.get(position));
+                pwindow = new PopupWindow(SeeScreen.this, orders.get(position),findViewById(R.id.seescreen), ordernums.get(position), adapter);
                 pwindow.show(findViewById(R.id.seescreen), 0, 0);
             }
         });
@@ -108,7 +109,8 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
                 db.addOrder(message);
                 ArrayList<JSONObject> one = db.getAllOrders();
                 ArrayList<String> two = db.getAllNums();
-                adapter.updateList(one,two);
+                ArrayList<String> three = db.getAllStatus();
+                adapter.updateList(one,two, three);
             }
         }
     };
@@ -157,6 +159,13 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
                     Toast.LENGTH_SHORT
             ).show();
             mAdapter.notifyDataSetChanged();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    refreshPage();
+                }
+            }, 500);
         }
     }
 
@@ -211,10 +220,10 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
 
     //controls if an item is swipable or not
     @Override
-    public boolean hasActions(int i) {
+    public boolean hasActions(int position) {
         Boolean answer;
 
-        if(listOfStatus.get(i).equals("0")){
+        if(listOfStatus.get(position).equals("0")){
             answer = false;
         }else {
             answer = true;
@@ -224,7 +233,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
 
     // return true if you want the item to be dismissed, false if you want to keep it
     @Override
-    public boolean shouldDismiss(int i, int i1) {
+    public boolean shouldDismiss(int position, int direction) {
         return false;
     }
 
@@ -277,8 +286,16 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
         pwindow.getPd().dismiss();
     }
 
-    public void reasoncuatro(View view){
+    public void reasoncuatro(View view) {
         Log.v("Buttonfour", "Hello There");
         pwindow.getPd().dismiss();
+    }
+
+    public void refreshPage(){
+        ArrayList<JSONObject> one = db.getAllOrders();
+        ArrayList<String> two = db.getAllNums();
+        ArrayList<String> three = db.getAllStatus();
+        adapter.updateList(one, two, three);
+        adapter.notifyDataSetChanged();
     }
 }

@@ -2,6 +2,7 @@ package com.choppingboard.v1;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 
 /**
@@ -44,14 +47,15 @@ public class PopupWindow extends android.widget.PopupWindow {
     PopupDeny pd;
     private static final String TAG = "PopupWindow";
     DatabaseHandler db;
+    CustomList adapter;
 
-
-    public PopupWindow(Context context, final JSONObject o, View v, final String ordernum) {
+    public PopupWindow(Context context, final JSONObject o, View v, final String ordernum, final CustomList adapter) {
         super(context);
 
         deny = v;
         ctx = context;
         db = new DatabaseHandler(ctx);
+        this.adapter = adapter;
         popupView = LayoutInflater.from(context).inflate(R.layout.popup, null);
         setContentView(popupView);
         sv = (ScrollView) popupView.findViewById(R.id.listorderd);
@@ -166,7 +170,16 @@ public class PopupWindow extends android.widget.PopupWindow {
                                     intent.putExtra("status", "" + 10);
                                     intent.putExtra("ordKeyId", ordernum);
                                     ctx.startService(intent);
-                                    dismiss();
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ArrayList<JSONObject> one = db.getAllOrders();
+                                            ArrayList<String> two = db.getAllNums();
+                                            ArrayList<String> three = db.getAllStatus();
+                                            adapter.updateList(one,two, three);
+                                            dismiss();
+                                        }
+                                    }, 500);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
