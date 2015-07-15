@@ -17,12 +17,14 @@ import java.util.ArrayList;
  */
 public class CustomList extends ArrayAdapter<JSONObject>{
 
+    //.........FIELDS..........//
     private final Activity context;
     private ArrayList<JSONObject> orders;
     private ArrayList<String> ordernums;
     private ArrayList<String> listOfStatus;
     DatabaseHandler db;
 
+    //........ Constructor ........//
     public CustomList(Activity context, ArrayList<JSONObject> orders, ArrayList<String> ordernums, ArrayList<String> listOfStatus) {
         super(context, R.layout.customlist, orders);
         this.context = context;
@@ -33,6 +35,7 @@ public class CustomList extends ArrayAdapter<JSONObject>{
 
     }
 
+    //........ Main method that populates the listview, style and info ........//
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         try
@@ -61,7 +64,7 @@ public class CustomList extends ArrayAdapter<JSONObject>{
         return null;
     }
 
-    //Used to update the list view when new info is added
+    //........ Used to update the list view when new info is added ........//
     public void updateList(ArrayList<JSONObject> a, ArrayList<String> b, ArrayList<String> c) {
         orders.clear();
         ordernums.clear();

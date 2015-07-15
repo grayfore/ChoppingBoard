@@ -306,6 +306,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
         active = false;
     }
 
+    //........ Methods that correlate to buttons on the deny popupwindow ........//
     public void reasonuno(View view){
         Log.v("Buttonone", "Hello There");
         pwindow.getPd().dismiss();
@@ -326,6 +327,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
         pwindow.getPd().dismiss();
     }
 
+    //updates the listview when it is called
     public void refreshPage(){
         ArrayList<JSONObject> one = db.getAllOrders();
         ArrayList<String> two = db.getAllNums();

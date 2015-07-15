@@ -26,6 +26,8 @@ import java.util.ArrayList;
  * Created by Jeff on 6/29/15.
  */
 public class PopupWindow extends android.widget.PopupWindow {
+
+    //....... Fields ........ //
     Context ctx;
     //    Button btnDismiss;
     View popupView;
@@ -49,9 +51,11 @@ public class PopupWindow extends android.widget.PopupWindow {
     DatabaseHandler db;
     CustomList adapter;
 
+    //........ Constructor ........//
     public PopupWindow(Context context, final JSONObject o, View v, final String ordernum, final CustomList adapter) {
         super(context);
 
+        //Initializing needed UI elements and fields//
         deny = v;
         ctx = context;
         db = new DatabaseHandler(ctx);
@@ -67,6 +71,28 @@ public class PopupWindow extends android.widget.PopupWindow {
         custnum = (TextView) popupView.findViewById(R.id.custnum);
         table = (TableLayout) popupView.findViewById(R.id.orderItems);
 
+        //defines the size of the actual popup
+        setHeight(850);
+        setWidth(550);
+
+        // Closes the popup window when touch outside of it - when looses focus
+        setOutsideTouchable(true);
+        setFocusable(true);
+        setTouchable(true);
+
+        // Sets the background for the swipe accept and deny
+        TextDrawable back = new TextDrawable();
+        setBackgroundDrawable(back);
+
+//        btnDismiss.setOnClickListener(new Button.OnClickListener(){
+//
+//            @Override
+//            public void onClick(View v) {
+//                dismiss();
+//            }});
+
+        //Creates the order by setting up customer info at the top of the screen
+        //then dynamically adding rows to a tableview...
         try {
             orderid.setText("Order " + o.getString("id"));
             ordertime.setText("Order time: " + o.getString("reqtime"));
@@ -74,6 +100,7 @@ public class PopupWindow extends android.widget.PopupWindow {
             add.setText("Address: " + o.getString("custAdd"));
             custnum.setText("Number: " + o.getString("custNum"));
 
+            //Then it loops through to get each ordered item....
             for (int i = 1; i <= 10; i++) {
                 if (o.getString("OrderItem" + i) != null) {
                     String orderItem = o.getString("OrderItem" + i);
@@ -85,6 +112,7 @@ public class PopupWindow extends android.widget.PopupWindow {
                     ((TextView) row.findViewById(R.id.quantity)).setText("x" + orderitem.getString("Quantity"));
                     table.addView(row);
 
+                    //and then another loop inside that loop to grab the extras
                     if (!orderitem.getString("Extras").equals("[null]")) {
                         TableRow extra = (TableRow) LayoutInflater.from(ctx).inflate(R.layout.extra_row, null);
                         String thing = orderitem.getString("Extras");
@@ -104,6 +132,7 @@ public class PopupWindow extends android.widget.PopupWindow {
         }
 
         //this is in a different try-catch because it doesnt work when its in the other one for some reason
+        //These last
         try {
             TableRow deliv = (TableRow) LayoutInflater.from(ctx).inflate(R.layout.total_row, null);
             ((TextView) deliv.findViewById(R.id.attrib_name)).setText("Delivery Charge: ");
@@ -126,30 +155,11 @@ public class PopupWindow extends android.widget.PopupWindow {
             e.printStackTrace();
         }
 
-
-        setHeight(850);
-        setWidth(550);
-
-        // Closes the popup window when touch outside of it - when looses focus
-        setOutsideTouchable(true);
-        setFocusable(true);
-        setTouchable(true);
-
-        TextDrawable back = new TextDrawable();
-        setBackgroundDrawable(back);
-
-//        btnDismiss.setOnClickListener(new Button.OnClickListener(){
-//
-//            @Override
-//            public void onClick(View v) {
-//                dismiss();
-//            }});
-
+        //This intercepts all touches that occur... all touch action is in here
         this.setTouchInterceptor(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-//                    scrollh = sv.getScrollY();
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         x1 = event.getX();
@@ -158,8 +168,11 @@ public class PopupWindow extends android.widget.PopupWindow {
                     case MotionEvent.ACTION_UP:
                         x2 = event.getX();
                         y2 = event.getY();
-//                            scrollh = sv.getScrollY();
                         float deltaX = x2 - x1;
+
+                        // If statement checks to make sure that a distance of 120 is met, twist is true, and status is 0
+                        // twist is a boolean meant to help user when they are scrolling... if scrolling is occuring it
+                        // will help stop the left and right swipe. If the status is not 0, there is no need to swipe left or right
                         if (Math.abs(deltaX) > MIN_DISTANCE && twist && db.getStatus(ordernum).equals("0")) {
                             // Left to Right swipe action
                             if (x2 > x1) {
@@ -190,6 +203,7 @@ public class PopupWindow extends android.widget.PopupWindow {
                                 dismiss();
                                 openDeny(o);
                             }
+                        //Else if statement so that if the status is not 0, swiping any direction will dismiss the popup
                         }else if(Math.abs(deltaX) > MIN_DISTANCE){
                             if(x2 > x1){
                                 dismiss();
@@ -200,8 +214,10 @@ public class PopupWindow extends android.widget.PopupWindow {
                         break;
                 }
 
+                //if the user is not scrolling, swiping can occur
                 if (twist) {
                     move = event.getX();
+                    //swiping only happens when status is 0
                     if (db.getStatus(ordernum).equals("0")) {
                         if ((Math.abs(move - x1) > 12)) {
                             popupView.setX(move - x1);
@@ -214,6 +230,8 @@ public class PopupWindow extends android.widget.PopupWindow {
                         }
                     }
                 }
+
+                //Below is for the scrolling action
                 scroll = event.getY();
                 int amount = (int) (y1 - scroll);
                 sv.scrollTo(0, (int) (scrollh + amount));
@@ -240,6 +258,7 @@ public class PopupWindow extends android.widget.PopupWindow {
         showAtLocation(anchor, Gravity.CENTER, x, y);
     }
 
+    // If the user swipes to deny, it opens up a deny popupwindow
     public void openDeny(JSONObject o) {
         pd = new PopupDeny(ctx, o);
         pd.show(deny, 0, 0);

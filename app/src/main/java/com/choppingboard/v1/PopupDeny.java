@@ -28,6 +28,7 @@ public class PopupDeny extends android.widget.PopupWindow {
         popupView = LayoutInflater.from(context).inflate(R.layout.popupdeny, null);
         setContentView(popupView);
 
+        //sets the size of the popup
         setHeight(850);
         setWidth(550);
 
