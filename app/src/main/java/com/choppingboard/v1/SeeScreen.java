@@ -143,7 +143,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
                                 public void run() {
                                     refreshPage();
                                 }
-                            }, 500);
+                            }, 200);
                             break;
 
                         case DialogInterface.BUTTON_NEGATIVE:
@@ -200,7 +200,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
                 public void run() {
                     refreshPage();
                 }
-            }, 500);
+            }, 200);
         }
     }
 

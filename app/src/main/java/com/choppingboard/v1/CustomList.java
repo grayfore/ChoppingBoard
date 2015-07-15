@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -53,8 +54,18 @@ public class CustomList extends ArrayAdapter<JSONObject>{
 //            Log.v("bobobo", "" + thinger);
             num.setText(ordernums.get(position));
             txtview.setText(price);
-            TextView status = (TextView)convertView.findViewById(R.id.status);
-            status.setText(listOfStatus.get(position));
+            ImageView status = (ImageView)convertView.findViewById(R.id.status);
+            if(db.getStatus(ordernums.get(position)).equals("0")){
+                status.setImageResource(R.drawable.x);
+            }else if(db.getStatus(ordernums.get(position)).equals("4")){
+                status.setImageResource(R.drawable.check);
+            }
+            else if(db.getStatus(ordernums.get(position)).equals("10")){
+                status.setImageResource(R.drawable.hourglass);
+            }
+            else{
+                status.setImageResource(R.drawable.colorbg);
+            }
             return convertView;
 
         }
