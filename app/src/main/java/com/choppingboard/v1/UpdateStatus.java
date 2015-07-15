@@ -32,11 +32,14 @@ public class UpdateStatus extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         db = new DatabaseHandler(this);
+        //Retrieve all the intent extras
         orderId = intent.getStringExtra("orderId");
         status = intent.getStringExtra("status");
         ordKeyId = intent.getStringExtra("ordKeyId");
+        //change status locally
         db.updateStatus(ordKeyId, status);
 
+        //change status on database
         String targetUrl = "http://choppingboard.comuf.com/status.php";
         JSONObject json = new JSONObject();
         try {

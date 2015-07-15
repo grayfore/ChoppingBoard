@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 
 /**
  * Created by Jeff on 7/3/15.
+ * This is used for the background of the popupwindow
  */
 public class TextDrawable extends Drawable {
 
