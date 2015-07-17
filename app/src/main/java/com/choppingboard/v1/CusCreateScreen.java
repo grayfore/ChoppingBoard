@@ -236,50 +236,79 @@ public class CusCreateScreen extends Activity {
      * @param view The menu button
      */
     public void MenuButton(View view) {
-        checkCustomerEdited(customer, customers);
-        if(!customerFound) {
-            JSONObject jCustomer = new JSONObject();
-            try {
-                jCustomer.put("name", nameText.getText());
-                jCustomer.put("phone", phoneText.getText());
-                jCustomer.put("address", addressText.getText());
-            } catch (JSONException e) {
-                e.printStackTrace();
+        JSONObject jCustomer = new JSONObject();
+        try {
+            jCustomer.put("name", nameText.getText());
+            jCustomer.put("phone", phoneText.getText());
+            jCustomer.put("address", addressText.getText());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.v("Old String", customer.toString());
+        Log.v("New String", jCustomer.toString());
+        if(checkCustomerEdited(jCustomer)) {
+            Log.v("Customer Edited", "true");
+            updateCustomer(jCustomer);
+        }
+        try {
+            if(!customerFound || !jCustomer.get("phone").equals(customer.get("phone"))) {
+                addNewCustomer(jCustomer);
             }
-            db.addCustomer(jCustomer.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         Intent i = new Intent(CusCreateScreen.this, ResMenuActivity.class);
         CusCreateScreen.this.startActivity(i);
     }
 
     /**
-     * Updates a customer's saved info if it is changed externally
+     * Checks to see if loaded customer's data has been changed externally
      *
-     * @param inCustomer The customer being checked for modification
-     * @param inCustomers The list of all customers
+     * @param inCustomer The customer being analyzed
+     * @return edited Statement whether loaded customer's data has been changed externally
      */
-    private void checkCustomerEdited(JSONObject inCustomer, ArrayList<JSONObject> inCustomers) {
-        for(JSONObject c : inCustomers) {
-            try {
-                if(c.get("phone").equals(inCustomer.get("phone"))) {
-                    boolean edited = false;
-                    if(!c.get("name").equals(nameText.getText())) {
-                        edited = true;
-                        inCustomer.remove("name");
-                        inCustomer.put("name", nameText.getText());
-                    }
-                    if(!c.get("address").equals(addressText.getText())) {
-                        edited = true;
-                        inCustomer.remove("address");
-                        inCustomer.put("address", addressText.getText());
-                    }
-                    if(edited)
-                        db.editCustomer(c.toString(), inCustomer.toString());
+    private boolean checkCustomerEdited(JSONObject inCustomer) {
+        boolean edited = false;
+        Log.v("Method", "checkCustomerEdited");
+        try {
+            Log.v("Trying", "checkCustomerEdited");
+            Log.v("Checking", "[" + customer.get("phone").toString() + "]" +
+                    " against [" +inCustomer.get("phone").toString() + "]");
+            if(customer.get("phone").toString().equals(inCustomer.get("phone").toString())) {
+                Log.v("Customers Equal", "true");
+                if(!customer.get("name").equals(inCustomer.get("name"))) {
+                    Log.v("Customer Edited", "true");
+                    edited = true;
                 }
-            } catch(JSONException e) {
-                e.printStackTrace();
+                if(!customer.get("address").equals(inCustomer.get("address"))) {
+                    Log.v("Customer Edited", "true");
+                    edited = true;
+                }
             }
+        } catch(JSONException e) {
+            e.printStackTrace();
         }
+        return edited;
+    }
+
+    /**
+     * Adds a new customer to the local database
+     *
+     * @param inCustomer
+     */
+    private void addNewCustomer(JSONObject inCustomer) {
+        db.addCustomer(inCustomer.toString());
+    }
+
+    /**
+     * Updates an existing customer in the database
+     *
+     * @param inCustomer
+     */
+    private void updateCustomer(JSONObject inCustomer) {
+        Log.v("Old String", customer.toString());
+        Log.v("New String", inCustomer.toString());
+        db.editCustomer(customer.toString(), inCustomer.toString());
     }
 
 
