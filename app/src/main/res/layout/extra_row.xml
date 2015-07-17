@@ -9,6 +9,7 @@
         android:layout_weight=".75"
         android:textSize="15dp"
         android:textColor="@color/black"
-        android:paddingLeft="30dp"/>
+        android:paddingLeft="30dp"
+        />
 
 </TableRow>

@@ -29,6 +29,13 @@ public class UpdateStatus extends IntentService {
         super(TAG);
     }
 
+    /**
+     *  This method handles the intent that is created wherever a status needs to be updated (in other classes).
+     *  Retrieves intent extras to update remote database and local database
+     *
+     * @param intent
+     */
+
     @Override
     protected void onHandleIntent(Intent intent) {
         db = new DatabaseHandler(this);
@@ -51,6 +58,15 @@ public class UpdateStatus extends IntentService {
         }
 
     }
+
+    /**
+     * Update the remote database by making a url connection.
+     * Returns "OK" and URL response codes
+     *
+     * @param targetURL
+     * @param urlParameters
+     * @return
+     */
 
     public static String updateStatus(String targetURL, String urlParameters) {
         if(urlParameters.equals(null))
