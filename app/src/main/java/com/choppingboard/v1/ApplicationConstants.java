@@ -6,7 +6,7 @@ package com.choppingboard.v1;
 public interface ApplicationConstants {
 
     // Php Application URL to store Reg ID created
-    static final String APP_SERVER_URL = "http://choppingboard.comuf.com/gcm.php?shareRegId=true";
+    static final String APP_SERVER_URL = "http://choppingboard.comuf.com/json.php";
 
     // Google Project Number
     static final String GOOGLE_PROJ_ID = "499667597336";

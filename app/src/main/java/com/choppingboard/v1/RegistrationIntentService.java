@@ -51,23 +51,26 @@ public class RegistrationIntentService extends IntentService {
     public static final String EMAIL_ID = "eMailId";
     private String email;
 
+    /**
+     * Setup process for this class when it is created as an object externally
+     *
+     */
     public RegistrationIntentService() {
         super(TAG);
     }
 
+    /**
+     * Setup process for this class when it is created as an intent externally
+     *
+     * @param intent Passed in data by an external class
+     */
     @Override
     protected void onHandleIntent(Intent intent) {
         email = intent.getStringExtra("email");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         try {
-            // In the (unlikely) event that multiple refresh operations occur simultaneously,
-            // ensure that they are processed sequentially.
             synchronized (TAG) {
-                // [START register_for_gcm]
-                // Initially this call goes out to the network to retrieve the token, subsequent calls
-                // are local.
-                // [START get_token]
                 InstanceID instanceID = InstanceID.getInstance(this);
                 String token = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
                         GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
@@ -76,24 +79,17 @@ public class RegistrationIntentService extends IntentService {
 
                 sendRegistrationToServer(token);
 
-                // Subscribe to topic channels
                 subscribeTopics(token);
 
-                // You should store a boolean that indicates whether the generated token has been
-                // sent to your server. If the boolean is false, send the token to your server,
-                // otherwise your server should have already received the token.
                 sharedPreferences.edit().putBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, true).apply();
                 // [END register_for_gcm]
             }
         } catch (Exception e) {
             Log.d(TAG, "Failed to complete token refresh", e);
-            // If an exception happens while fetching the new token or updating our registration data
-            // on a third-party server, this ensures that we'll attempt the update at a later time.
             sharedPreferences.edit().putBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false).apply();
             Intent registrationFailure = new Intent(QuickstartPreferences.REGISTRATION_FAILED);
             LocalBroadcastManager.getInstance(this).sendBroadcast(registrationFailure);
         }
-        // Notify UI that registration has completed, so the progress indicator can be hidden.
         Intent registrationComplete = new Intent(QuickstartPreferences.REGISTRATION_COMPLETE);
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
     }
@@ -108,7 +104,7 @@ public class RegistrationIntentService extends IntentService {
      */
     private void sendRegistrationToServer(String token) {
         JSONObject json = new JSONObject();
-        String targetUrl = "http://choppingboard.comuf.com/json.php";
+        String targetUrl = ApplicationConstants.APP_SERVER_URL;
         try {
             json.put("token", token);
             json.put("email", email);
@@ -127,7 +123,14 @@ public class RegistrationIntentService extends IntentService {
         }
     }
 
-    public static String executePost(String targetURL, String urlParameters) {
+    /**
+     * Connects to a third-party server to store generated registration info
+     *
+     * @param targetURL The location of the third-party database
+     * @param urlParameters The registration info to be saved
+     * @return response The response from the web server
+     */
+    private static String executePost(String targetURL, String urlParameters) {
         if(urlParameters.equals(null))
             return null;
         URL url;
@@ -169,7 +172,10 @@ public class RegistrationIntentService extends IntentService {
         }
     }
 
-    // Store  RegId and Email entered by User in SharedPref
+    /**
+     * Saves this user's registration token in their app preferences
+     * @param regId
+     */
     private void storeRegIdinSharedPref(String regId) {
         SharedPreferences prefs = getSharedPreferences("UserDetails",
                 Context.MODE_PRIVATE);

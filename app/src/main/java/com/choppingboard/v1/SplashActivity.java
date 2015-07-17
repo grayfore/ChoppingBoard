@@ -10,13 +10,18 @@ import android.os.Handler;
  */
 public class SplashActivity extends Activity {
 
+    // Duration of time that the splash page is displayed
     private final int SPLASH_DISPLAY_LENGTH = 5000;
 
+    /**
+     * Setup process for this class when it is created as an activity externally
+     *
+     * @param savedInstanceState Passed in data by an external class
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

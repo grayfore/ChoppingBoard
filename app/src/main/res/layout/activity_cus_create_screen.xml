@@ -30,7 +30,7 @@
         android:layout_marginStart="24dp"
         android:imeOptions="actionNext"/>
 
-    <EditText
+<!--    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPostalAddress"
@@ -40,7 +40,19 @@
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/textView"
         android:layout_marginStart="24dp"
-        android:imeOptions="actionNext"/>
+        android:imeOptions="actionNext"/>-->
+
+    <AutoCompleteTextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/addressEdit"
+        android:layout_marginTop="318dp"
+        android:layout_alignParentTop="true"
+        android:imeOptions="actionNext"
+        android:layout_alignEnd="@+id/phoneEdit"
+        android:layout_alignStart="@+id/phoneEdit">
+        <requestFocus></requestFocus>
+    </AutoCompleteTextView>
 
     <TextView
         android:layout_width="wrap_content"

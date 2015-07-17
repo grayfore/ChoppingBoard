@@ -11,6 +11,11 @@ import android.widget.TextView;
 
 public class BuildScreen extends Activity {
 
+    /**
+     * Setup process for this class when it is created as an activity externally
+     *
+     * @param savedInstanceState Passed in data by an external class
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,12 +36,5 @@ public class BuildScreen extends Activity {
         });
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//        Intent intent = new Intent(this,DashBoard.class);
-//        BuildScreen.this.startActivity(intent);
-//        BuildScreen.this.finish();
-//    }
 
 }

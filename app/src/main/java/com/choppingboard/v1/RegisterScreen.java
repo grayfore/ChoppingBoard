@@ -22,14 +22,26 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class RegisterScreen extends Activity {
+
+    // Loading screen for longer tasks
     ProgressDialog prgDialog;
+
+    // Data on the running activity
     Context applicationContext;
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
+    // Name of the preference for registration id
     public static final String REG_ID = "regId";
+
+    // The text field for email
     EditText emailET;
 
+    /**
+     * Setup process for this class when it is created as an activity externally
+     *
+     * @param savedInstanceState Passed in data by an external class
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,16 +51,13 @@ public class RegisterScreen extends Activity {
         emailET = (EditText) findViewById(R.id.email);
 
         prgDialog = new ProgressDialog(this);
-        // Set Progress Dialog Text
         prgDialog.setMessage("Please wait...");
-        // Set Cancelable as False
         prgDialog.setCancelable(false);
 
         SharedPreferences prefs = getSharedPreferences("UserDetails",
                 Context.MODE_PRIVATE);
         String registrationId = prefs.getString(REG_ID, "");
 
-        //When Email ID is set in Sharedpref, User will be taken to HomeActivity
         if (!TextUtils.isEmpty(registrationId)) {
             Intent i = new Intent(applicationContext, DashBoard.class);
             i.putExtra("regId", registrationId);
@@ -62,20 +71,30 @@ public class RegisterScreen extends Activity {
                 new IntentFilter(QuickstartPreferences.REGISTRATION_FAILED));
     }
 
-        private BroadcastReceiver sMessageReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Toast.makeText(applicationContext, "Registration successful!",
-                        Toast.LENGTH_LONG).show();
-                // Get extra data included in the Intent
-                Intent i = new Intent(RegisterScreen.this, DashBoard.class);
-                // i.putExtra("regId", regId);
-                RegisterScreen.this.startActivity(i);
-                finish();
-            }
-        };
+    private BroadcastReceiver sMessageReceiver = new BroadcastReceiver() {
+        /**
+         * Processes run when registration id is successfully sent to a third-party server
+         *
+         * @param context Passed in data by this class
+         * @param intent Passed in data by an external class
+         */
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Toast.makeText(applicationContext, "Registration successful!",
+                    Toast.LENGTH_LONG).show();
+            Intent i = new Intent(RegisterScreen.this, DashBoard.class);
+            RegisterScreen.this.startActivity(i);
+            finish();
+        }
+    };
 
     private BroadcastReceiver fMessageReceiver = new BroadcastReceiver() {
+        /**
+         * Processes run when registration id sending fails
+         *
+         * @param context Passed in data by this class
+         * @param intent Passed in data by an external class
+         */
         @Override
         public void onReceive(Context context, Intent intent) {
             Toast.makeText(
@@ -85,24 +104,24 @@ public class RegisterScreen extends Activity {
         }
     };
 
-    // When Register Me button is clicked
+    /**
+     * Attempts to register user with server if the register button is pressed
+     *
+     * @param view The register button
+     */
     public void RegisterUser(View view) {
         String emailID = emailET.getText().toString();
 
         if (!TextUtils.isEmpty(emailID) && Utility.validate(emailID)) {
 
-            // Check if Google Play Service is installed in Device
-            // Play services is needed to handle GCM stuffs
             if (checkPlayServices()) {
 
-                // Register Device in GCM Server
                 Intent intent = new Intent(this, RegistrationIntentService.class);
                 intent.putExtra("email", emailID);
                 startService(intent);
 
             }
         }
-        // When Email is invalid
         else {
             Toast.makeText(applicationContext, "Please enter valid email",
                     Toast.LENGTH_LONG).show();
@@ -110,117 +129,16 @@ public class RegisterScreen extends Activity {
 
     }
 
-    // AsyncTask to register Device in GCM Server
-    /* private void registerInBackground(final String emailID) {
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... params) {
-                String msg = "";
-                try {
-                    if (gcmObj == null) {
-                        gcmObj = GoogleCloudMessaging
-                                .getInstance(applicationContext);
-                    }
-                    regId = gcmObj
-                            .register(ApplicationConstants.GOOGLE_PROJ_ID);
-                    msg = "Registration ID :" + regId;
-
-                } catch (IOException ex) {
-                    msg = "Error :" + ex.getMessage();
-                }
-                return msg;
-            }
-
-            @Override
-            protected void onPostExecute(String msg) {
-                if (!TextUtils.isEmpty(regId)) {
-                    // Store RegId created by GCM Server in SharedPref
-                    storeRegIdinSharedPref(applicationContext, regId, emailID);
-                    Toast.makeText(
-                            applicationContext,
-                            "Registered with GCM Server successfully.\n\n"
-                                    + msg, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(
-                            applicationContext,
-                            "Reg ID Creation Failed.\n\nEither you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time."
-                                    + msg, Toast.LENGTH_LONG).show();
-                }
-            }
-        }.execute(null, null, null);
-    }*/
-
-    // Share RegID with GCM Server Application (Php)
-    /*private void storeRegIdinServer() {
-        prgDialog.show();
-        params.put("regId", regId);
-        // Make RESTful webservice call using AsyncHttpClient object
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.post(ApplicationConstants.APP_SERVER_URL, params,
-                new AsyncHttpResponseHandler() {
-
-                    // When the response returned by REST has Http
-                    // response code '200'
-
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        prgDialog.hide();
-                        if (prgDialog != null) {
-                            prgDialog.dismiss();
-                        }
-                        Toast.makeText(applicationContext,
-                                "Reg Id shared successfully with Web App ",
-                                Toast.LENGTH_LONG).show();
-                        Intent i = new Intent(applicationContext,
-                                SeeScreen.class);
-                        i.putExtra("regId", regId);
-                        startActivity(i);
-                        finish();
-                    }
-
-                    // When the response returned by REST has Http
-                    // response code other than '200' such as '404',
-                    // '500' or '403' etc
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        // Hide Progress Dialog
-                        prgDialog.hide();
-                        if (prgDialog != null) {
-                            prgDialog.dismiss();
-                        }
-                        // When Http response code is '404'
-                        if (statusCode == 404) {
-                            Toast.makeText(applicationContext,
-                                    "Requested resource not found",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                        // When Http response code is '500'
-                        else if (statusCode == 500) {
-                            Toast.makeText(applicationContext,
-                                    "Something went wrong at server end",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                        // When Http response code other than 404, 500
-                        else {
-                            Toast.makeText(
-                                    applicationContext,
-                                    "Unexpected Error occcured! [Most common Error: Device might "
-                                            + "not be connected to Internet or remote server is not up and running], check for other errors as well",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-    }*/
-
-    // Check if Google Playservices is installed in Device or not
+    /**
+     * Statement whether or not Google Play Services are installed and running on current device
+     *
+     * @return false if not installed, true otherwise
+     */
     private boolean checkPlayServices() {
         int resultCode = GooglePlayServicesUtil
                 .isGooglePlayServicesAvailable(this);
-        // When Play services not found in device
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                // Show Error dialog to install Play services
                 GooglePlayServicesUtil.getErrorDialog(resultCode, this,
                         PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
@@ -235,7 +153,10 @@ public class RegisterScreen extends Activity {
         return true;
     }
 
-    // When Application is resumed, check for Play services support to make sure app will be running normally
+    /**
+     * Processes run when app is resumed
+     *
+     */
     @Override
     protected void onResume() {
         super.onResume();
