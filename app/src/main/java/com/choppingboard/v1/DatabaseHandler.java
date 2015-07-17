@@ -26,8 +26,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Order information table name
     static final String ORDER_INFO = "orderInfo";
+
+    // Customer information in table name
     static final String CUSTOMER_INFO = "customerInfo";
+
+    // The database object itself
     public SQLiteDatabase DB;
+
     // Order information fields
     private static final String ORD_KEY_ID = "OrderNumber";
     private static final String CUS_KEY_ID = "OrderNumber";
@@ -35,10 +40,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String Customer_Json = "OrderString";
     private static final String Status = "Status";
 
+    /**
+     * Setup process for this class when it is created as an object externally
+     *
+     * @param context Passed in data by an external class
+     */
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * Setup process for this class when it is created by an external class
+     *
+     * @param db The database to be filled with information
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_ORDER_TABLE = "CREATE TABLE " + ORDER_INFO + "("
@@ -55,6 +70,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Reset process for this class when the database requires an upgrade
+     *
+     * @param db The database to be upgraded
+     * @param oldVersion Version number of the old database
+     * @param newVersion Version number of the new database
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + ORDER_INFO);
@@ -64,7 +86,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Adding new order
+    /**
+     * Adds a new order to the datatbase
+     *
+     * @param str The JSON string to be added to the database as an order
+     */
     public  void addOrder(String str) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -76,6 +102,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
+    /**
+     * Adds a new customer to the database
+     *
+     * @param str The JSON string to be added to the database as a customer
+     */
     public  void addCustomer(String str) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -86,7 +117,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-
+    /**
+     * Changes the information of one customer in the database
+     *
+     * @param oldStr The old JSON data to be searched for
+     * @param newStr The new JSON data to be applied to the found customer
+     */
     public void editCustomer(String oldStr, String newStr) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -101,7 +137,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    //updating a status
+    /**
+     * Changes the status of a single order
+     *
+     * @param str The JSON string of the order to be updated
+     * @param newStat The new status value to be set for that order
+     */
     public void updateStatus(String str, String newStat){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -110,6 +151,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Obtains the current status of an order
+     *
+     * @param str The JSON string of the order to be checked
+     * @return answer The status of that order
+     */
     public String getStatus(String str){
         String answer = "";
 
@@ -127,7 +174,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-    // Getting All status
+    /**
+     * Obtains every order status as a list
+     *
+     * @return OrderList The list of statuses
+     */
     public ArrayList<String> getAllStatus() {
         ArrayList<String> OrderList = new ArrayList<String>();
         // Select All Query
@@ -148,7 +199,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return OrderList;
     }
 
-    // Getting All Orders
+    /**
+     * Obtains every order as a list
+     *
+     * @return OrderList the list of orders
+     */
     public ArrayList<JSONObject> getAllOrders() {
         ArrayList<JSONObject> OrderList = new ArrayList<JSONObject>();
         // Select All Query
@@ -172,6 +227,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // return contact list
         return OrderList;
     }
+
+    /**
+     * Obtains every customer as a list
+     *
+     * @return CustomerList the list of customers
+     */
     public ArrayList<JSONObject> getAllCustomers() {
         ArrayList<JSONObject> CustomerList = new ArrayList<JSONObject>();
         // Select All Query
@@ -196,7 +257,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return CustomerList;
     }
 
-    //Getting all order numbers to use in listview
+    /**
+     * Obtains every order number as a list
+     *
+     * @return OrderList the list of numbers
+     */
     public ArrayList<String> getAllNums() {
         ArrayList<String> OrderList = new ArrayList<String>();
         // Select All Query
@@ -218,7 +283,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    // Getting contacts Count
+    /**
+     * Gives the number of orders currently in the database
+     *
+     * @return int number of orders
+     */
     public int getOrderCount() {
         String countQuery = "SELECT  * FROM " + ORDER_INFO;
         SQLiteDatabase db = this.getReadableDatabase();

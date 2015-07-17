@@ -50,6 +50,7 @@ public class RegistrationIntentService extends IntentService {
     public static final String REG_ID = "regId";
     public static final String EMAIL_ID = "eMailId";
     private String email;
+    private String restoID;
 
     /**
      * Setup process for this class when it is created as an object externally
@@ -67,6 +68,7 @@ public class RegistrationIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         email = intent.getStringExtra("email");
+        restoID = intent.getStringExtra("restaurant");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         try {
@@ -108,6 +110,7 @@ public class RegistrationIntentService extends IntentService {
         try {
             json.put("token", token);
             json.put("email", email);
+            json.put("restaurant_ID", restoID);
         } catch (JSONException e) {
             e.printStackTrace();
             Log.d(TAG, e.toString());

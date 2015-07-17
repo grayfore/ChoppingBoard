@@ -37,6 +37,9 @@ public class RegisterScreen extends Activity {
     // The text field for email
     EditText emailET;
 
+    // The text field for restaurant ID
+    EditText idET;
+
     /**
      * Setup process for this class when it is created as an activity externally
      *
@@ -49,6 +52,7 @@ public class RegisterScreen extends Activity {
 
         applicationContext = getApplicationContext();
         emailET = (EditText) findViewById(R.id.email);
+        idET = (EditText) findViewById(R.id.restoId);
 
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
@@ -71,6 +75,10 @@ public class RegisterScreen extends Activity {
                 new IntentFilter(QuickstartPreferences.REGISTRATION_FAILED));
     }
 
+    /**
+     * Receiver for registration success in-app message
+     *
+     */
     private BroadcastReceiver sMessageReceiver = new BroadcastReceiver() {
         /**
          * Processes run when registration id is successfully sent to a third-party server
@@ -80,6 +88,7 @@ public class RegisterScreen extends Activity {
          */
         @Override
         public void onReceive(Context context, Intent intent) {
+            prgDialog.dismiss();
             Toast.makeText(applicationContext, "Registration successful!",
                     Toast.LENGTH_LONG).show();
             Intent i = new Intent(RegisterScreen.this, DashBoard.class);
@@ -88,6 +97,9 @@ public class RegisterScreen extends Activity {
         }
     };
 
+    /**
+     * Receiver for registration failure in-app message
+     */
     private BroadcastReceiver fMessageReceiver = new BroadcastReceiver() {
         /**
          * Processes run when registration id sending fails
@@ -97,6 +109,7 @@ public class RegisterScreen extends Activity {
          */
         @Override
         public void onReceive(Context context, Intent intent) {
+            prgDialog.dismiss();
             Toast.makeText(
                     applicationContext,
                     "Reg ID Creation Failed.\n\nEither you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time."
@@ -110,7 +123,9 @@ public class RegisterScreen extends Activity {
      * @param view The register button
      */
     public void RegisterUser(View view) {
+        prgDialog.show();
         String emailID = emailET.getText().toString();
+        String restoId = idET.getText().toString();
 
         if (!TextUtils.isEmpty(emailID) && Utility.validate(emailID)) {
 
@@ -118,6 +133,7 @@ public class RegisterScreen extends Activity {
 
                 Intent intent = new Intent(this, RegistrationIntentService.class);
                 intent.putExtra("email", emailID);
+                intent.putExtra("restaurant", restoId);
                 startService(intent);
 
             }

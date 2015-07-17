@@ -39,8 +39,9 @@
     <string name="title_activity_build_screen">Build Screen</string>
     <string name="title_activity_build_area">BuildArea</string>
     <string name="title_activity_registerpage">registerpage</string>
-    <string name="welcome_txt">GCM App</string>
+    <string name="welcome_txt">ChoppingBoard</string>
     <string name="email">Email Address</string>
+    <string name="restoID">Restaurant ID</string>
     <string name="login">Register Me</string>
     <string name="defaultmsg">Message sent by server will appear here.</string>
     <string name="msg_title">Message</string>
