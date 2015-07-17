@@ -124,6 +124,11 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
             // CAREFUL ABOUT THE FINAL... DOUBLE CHECK THIS WITH MULTIPLE ENTRIESt
             final int position = ints[i];
             String dir = "";
+
+            /**
+             * Dialog box that double checks if the user wants to cancel an order
+             * It shows up when there is a left swipe.
+             */
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -153,6 +158,9 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
                 }
             };
             AlertDialog.Builder builder = new AlertDialog.Builder(SeeScreen.this);
+            /**
+             * Switch that controls what action occur when a certain direction is swiped.
+             */
             switch (direction) {
                 case SwipeDirections.DIRECTION_FAR_LEFT:
                     dir = "Far left";
