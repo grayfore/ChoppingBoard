@@ -33,8 +33,10 @@
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-               <!-- <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                    ^MAYBE DEPRACATED!!-->
+                <!--
+                    <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                    ^MAYBE DEPRACATED!!
+                -->
 
                 <category android:name="com.choppingboard.v1.example" />
             </intent-filter>
@@ -42,7 +44,7 @@
 
         <service android:name=".GCMNotificationIntentService" />
         <service android:name=".RegistrationIntentService" />
-        <service android:name=".UpdateStatus"/>
+        <service android:name=".UpdateStatus" />
 
         <activity
             android:name=".SplashActivity"
@@ -100,6 +102,13 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.choppingboard.v1.CusCreateScreen" />
+        </activity>
+        <activity
+            android:name=".MenuExpand"
+            android:label="@string/title_activity_menu_expand" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.choppingboard.v1.ResMenuActivity" />
         </activity>
     </application>
 

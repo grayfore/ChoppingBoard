@@ -30,6 +30,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Customer information in table name
     static final String CUSTOMER_INFO = "customerInfo";
 
+    //Category info in table name
+    static final String CAT = "CategoryInfo";
+
+    //Material info in table name
+    static final String MAT = "MaterialInfo";
+
     // The database object itself
     public SQLiteDatabase DB;
 
@@ -39,6 +45,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String Order_Json = "OrderString";
     private static final String Customer_Json = "OrderString";
     private static final String Status = "Status";
+
+    private static final String CATEGORY = "Category";
+    private static final String NAME = "Name";
+    private static final String PRICE = "Price";
+    private static final String DESC = "Description";
+    private static final String NUMBER = "ExtraId";
+    private static final String TITLE = "Title";
+
 
     /**
      * Setup process for this class when it is created as an object externally
@@ -65,8 +79,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + CUS_KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + Customer_Json + " MEDIUMTEXT"
                 + ")";
+        String CREATE_CAT_TABLE = "CREATE TABLE " + CAT + "("
+                + NUMBER + " INTEGER PRIMARY KEY, "
+                + CATEGORY + " MEDIUMTEXT, "
+                + NAME + " MEDIUMTEXT, "
+                + PRICE + " TEXT, "
+                + DESC + " MEDIUMTEXT "
+                + ")";
+        String CREATE_MAT_TABLE = "CREATE TABLE " + MAT + "("
+                + NUMBER + " INTEGER PRIMARY KEY, "
+                + NAME + " MEDIUMTEXT, "
+                + PRICE + " TEXT, "
+                + DESC + " MEDIUMTEXT, "
+                + TITLE + " MEDIUMTEXT "
+                + ")";
+
         db.execSQL(CREATE_CUSTOMER_TABLE);
         db.execSQL(CREATE_ORDER_TABLE);
+        db.execSQL(CREATE_CAT_TABLE);
+        db.execSQL(CREATE_MAT_TABLE);
 
     }
 
@@ -81,10 +112,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + ORDER_INFO);
         db.execSQL("DROP TABLE IF EXISTS " + CUSTOMER_INFO);
+        db.execSQL("DROP TABLE IF EXISTS " + CAT);
+        db.execSQL("DROP TABLE IF EXISTS " + MAT);
 
         // Create tables again
         onCreate(db);
     }
+
+    public void createCAT(String str) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        Log.v("lambo", str);
+
+        try{
+            JSONObject obj = new JSONObject(str);
+            values.put(NUMBER, obj.getString("id"));
+            values.put(CATEGORY, obj.getString("category"));
+            values.put(NAME, obj.getString("name"));
+            values.put(PRICE, obj.getString("price"));
+            values.put(DESC, obj.getString("description"));
+
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        db.replace(CAT, null, values);
+        db.close();
+    }
+
 
     /**
      * Adds a new order to the datatbase

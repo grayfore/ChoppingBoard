@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -42,7 +43,14 @@ public class GCMNotificationIntentService extends IntentService {
                         + extras.toString());
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE
                     .equals(messageType)) {
-                sendNotification(""+extras.get(ApplicationConstants.MSG_KEY));
+
+                String one = "" + extras.get(ApplicationConstants.MENU_KEY);
+                Log.v("lambo", one);
+//                if(!one.equals("")) {
+//                    createMenu(one);
+//                }
+                    sendNotification("" + extras.get(ApplicationConstants.MSG_KEY));
+
             }
         }
         GcmBroadcastReceiver.completeWakefulIntent(intent);
@@ -119,7 +127,11 @@ public class GCMNotificationIntentService extends IntentService {
             mNotificationManager.notify(notifyID, mNotifyBuilder.build());
 
         }
+    }
 
+    public void createMenu(String str){
 
+        db = new DatabaseHandler(this);
+        db.createCAT(str);
     }
 }

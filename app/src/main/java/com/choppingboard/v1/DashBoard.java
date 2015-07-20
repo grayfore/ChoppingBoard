@@ -10,6 +10,8 @@ import android.view.View;
  */
 public class DashBoard extends Activity{
 
+    static boolean active = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +33,20 @@ public class DashBoard extends Activity{
         DashBoard.this.startActivity(intent);
     }
     public void invoiceScreen(View view){
+
+    }
+
+    //on start and on stop are used as booleans for intent if statement in GCMNotificationIntent Service
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
 
     }
 }
