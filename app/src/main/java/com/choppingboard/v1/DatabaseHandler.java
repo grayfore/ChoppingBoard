@@ -52,6 +52,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String DESC = "Description";
     private static final String NUMBER = "ExtraId";
     private static final String TITLE = "Title";
+    private static final String TIMESTAMP = "Timestamp";
 
 
     /**
@@ -73,7 +74,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_ORDER_TABLE = "CREATE TABLE " + ORDER_INFO + "("
                 + ORD_KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + Order_Json + " MEDIUMTEXT, "
-                + Status + " TEXT "
+                + Status + " TEXT, "
+                + TIMESTAMP + " DEFAULT CURRENT_TIMESTAMP "
                 + ");";
         String CREATE_CUSTOMER_TABLE = "CREATE TABLE " + CUSTOMER_INFO + "("
                 + CUS_KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -117,6 +119,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // Create tables again
         onCreate(db);
+    }
+
+    public ArrayList<String> getInvoice(){
+        ArrayList<String> OrderList = new ArrayList<String>();
+        String selectQuery = "SELECT  * FROM " + ORDER_INFO;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+
+                String thing = cursor.getString(3);
+
+                OrderList.add(thing);
+                // Adding contact to list
+            } while (cursor.moveToNext());
+        }
+        // return contact list
+        return OrderList;
     }
 
     public void createCAT(String str) {

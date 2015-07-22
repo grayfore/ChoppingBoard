@@ -2,17 +2,21 @@ package com.choppingboard.v1;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 
+import java.util.ArrayList;
+
 
 public class Invoice extends Activity {
 
     DatePicker first, second;
     Button submit;
+    DatabaseHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +26,7 @@ public class Invoice extends Activity {
         first = (DatePicker) findViewById(R.id.first);
         second = (DatePicker) findViewById(R.id.second);
         submit = (Button) findViewById(R.id.enter);
+        db = new DatabaseHandler(this);
 
 
     }
@@ -37,6 +42,10 @@ public class Invoice extends Activity {
         int secondYear = second.getYear();
 
 
+        ArrayList<String> h = db.getInvoice();
+        for(String s : h){
+            Log.v("lamboyo", s);
+        }
 
     }
 
