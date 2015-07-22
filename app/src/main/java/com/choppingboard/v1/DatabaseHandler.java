@@ -11,6 +11,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by Jeff on 7/1/15.
@@ -163,8 +165,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ArrayList<JSONObject> getAllMenu() {
-        ArrayList<JSONObject> OrderList = new ArrayList<JSONObject>();
+    public Map getCatMenu() {
+        Map<String, ArrayList<String>> Menu = new TreeMap<String, ArrayList<String>>();
+
         // Select All Query
         String selectQuery = "SELECT  * FROM " + CAT;
 
@@ -174,30 +177,38 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                JSONObject json = new JSONObject();
+                ArrayList<String> list = new ArrayList<>();
                 String number = cursor.getString(0);
                 String category = cursor.getString(1);
                 String name = cursor.getString(2);
                 String price = cursor.getString(3);
                 String desc = cursor.getString(4);
 
-                try{
-                    json.put("number", number);
-                    json.put("category", category);
-                    json.put("name", name);
-                    json.put("price", price);
-                    json.put("desc", desc);
-
-                }catch (JSONException e){
-                    e.printStackTrace();
+//                try{
+//                    json.put("number", number);
+//                    json.put("category", category);
+//                    json.put("name", name);
+//                    json.put("price", price);
+//                    json.put("desc", desc);
+//
+//                }catch (JSONException e){
+//                    e.printStackTrace();
+//                }
+                if(Menu.get(category) != null){
+                    list = Menu.get(category);
+                    if(!list.contains(name)){
+                        list.add(name);
+                    }
+                }else{
+                    list.add(name);
                 }
 
-                OrderList.add(json);
+                Menu.put(category,list);
                 // Adding contact to list
             } while (cursor.moveToNext());
         }
         // return contact list
-        return OrderList;
+        return Menu;
     }
     /**
      * Adds a new order to the datatbase
