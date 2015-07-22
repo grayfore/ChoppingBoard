@@ -140,7 +140,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public ArrayList<String> getAllMenu() {
+        ArrayList<String> OrderList = new ArrayList<String>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + CAT;
 
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                String orderinfo = cursor.getString(2);
+                OrderList.add(orderinfo);
+                // Adding contact to list
+            } while (cursor.moveToNext());
+        }
+        // return contact list
+        return OrderList;
+    }
     /**
      * Adds a new order to the datatbase
      *

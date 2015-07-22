@@ -18,12 +18,15 @@ public class ResMenuActivity extends Activity {
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
+    DatabaseHandler db;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_res_menu);
+
+        db = new DatabaseHandler(this);
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
 
@@ -173,6 +176,8 @@ public class ResMenuActivity extends Activity {
         Beverages.add("Bottled Soda");
         Beverages.add("Gallons");
 
+
+
         listDataChild.put(listDataHeader.get(0), Combos); // Header, Child data
         listDataChild.put(listDataHeader.get(1), Platters);
         listDataChild.put(listDataHeader.get(2), SignatureSides);
@@ -181,7 +186,7 @@ public class ResMenuActivity extends Activity {
         listDataChild.put(listDataHeader.get(5), ButtermilkBiscuits);
         listDataChild.put(listDataHeader.get(6), FamilyMeals);
         listDataChild.put(listDataHeader.get(7), Dessert);
-        listDataChild.put(listDataHeader.get(8), Beverages);
+        listDataChild.put(listDataHeader.get(8), db.getAllMenu());
 
 
     }
