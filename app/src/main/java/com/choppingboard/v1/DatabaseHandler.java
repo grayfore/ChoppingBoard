@@ -140,8 +140,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ArrayList<String> getAllMenu() {
-        ArrayList<String> OrderList = new ArrayList<String>();
+    public ArrayList<JSONObject> getAllMenu() {
+        ArrayList<JSONObject> OrderList = new ArrayList<JSONObject>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + CAT;
 
@@ -151,8 +151,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                String orderinfo = cursor.getString(2);
-                OrderList.add(orderinfo);
+                JSONObject json = new JSONObject();
+                String number = cursor.getString(0);
+                String category = cursor.getString(1);
+                String name = cursor.getString(2);
+                String price = cursor.getString(3);
+                String desc = cursor.getString(4);
+
+                try{
+                    json.put("number", number);
+                    json.put("category", category);
+                    json.put("name", name);
+                    json.put("price", price);
+                    json.put("desc", desc);
+
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+
+                OrderList.add(json);
                 // Adding contact to list
             } while (cursor.moveToNext());
         }

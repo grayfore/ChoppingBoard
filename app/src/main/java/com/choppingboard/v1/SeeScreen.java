@@ -137,7 +137,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
                             try {
                                 Intent intent = new Intent(SeeScreen.this, UpdateStatus.class);
                                 intent.putExtra("orderId", orders.get(position).getString("id"));
-                                intent.putExtra("status", "" + 15);
+                                intent.putExtra("status", "" + 0);
                                 intent.putExtra("ordKeyId", ordernums.get(position));
                                 SeeScreen.this.startService(intent);
                             }catch (JSONException e){
@@ -177,7 +177,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
                     try {
                         Intent intent = new Intent(SeeScreen.this, UpdateStatus.class);
                         intent.putExtra("orderId", orders.get(position).getString("id"));
-                        intent.putExtra("status", "" + 0);
+                        intent.putExtra("status", "" + 4);
                         intent.putExtra("ordKeyId", ordernums.get(position));
                         SeeScreen.this.startService(intent);
                     }catch (JSONException e){
@@ -189,7 +189,7 @@ public class SeeScreen extends ListActivity implements SwipeActionAdapter.SwipeA
                     try {
                         Intent intent = new Intent(SeeScreen.this, UpdateStatus.class);
                         intent.putExtra("orderId", orders.get(position).getString("id"));
-                        intent.putExtra("status", "" + 0);
+                        intent.putExtra("status", "" + 4);
                         intent.putExtra("ordKeyId", ordernums.get(position));
                         SeeScreen.this.startService(intent);
                     }catch (JSONException e){

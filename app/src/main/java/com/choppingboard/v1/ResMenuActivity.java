@@ -3,9 +3,13 @@ package com.choppingboard.v1;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -115,67 +119,102 @@ public class ResMenuActivity extends Activity {
         listDataHeader.add("Beverages");
 
         List<String> Combos = new ArrayList<String>();
-        Combos.add("Bone In Chicken");
-        Combos.add("Boneess Chicken");
-        Combos.add("Seafood");
+//        Combos.add("Bone In Chicken");
+//        Combos.add("Boneess Chicken");
+//        Combos.add("Seafood");
 
         List<String> Platters = new ArrayList<String>();
-        Platters.add("Bone In Chicken");
-        Platters.add("Boneless Chicken");
-        Platters.add("Seafood");
+//        Platters.add("Bone In Chicken");
+//        Platters.add("Boneless Chicken");
+//        Platters.add("Seafood");
 
         List<String> SignatureSides = new ArrayList<String>();
-        SignatureSides.add("Corn on the Cob");
-        SignatureSides.add("Onion Rings");
-        SignatureSides.add("Cajun Rice");
-        SignatureSides.add("Mashed Potatoes with Cajun Gravy");
-        SignatureSides.add("Red Beans and Rice");
-        SignatureSides.add("Cajun Fries");
-        SignatureSides.add("Green Beans");
+//        SignatureSides.add("Corn on the Cob");
+//        SignatureSides.add("Onion Rings");
+//        SignatureSides.add("Cajun Rice");
+//        SignatureSides.add("Mashed Potatoes with Cajun Gravy");
+//        SignatureSides.add("Red Beans and Rice");
+//        SignatureSides.add("Cajun Fries");
+//        SignatureSides.add("Green Beans");
 
         List<String> BonelessChicken = new ArrayList<String>();
-        BonelessChicken.add("3 Piece Tenders");
-        BonelessChicken.add("5 Piece Tenders");
-        BonelessChicken.add("10 Piece Tenders");
-        BonelessChicken.add("15 Piece Tenders");
-        BonelessChicken.add("25 Piece Tenders");
-        BonelessChicken.add("50 Piece Tenders");
-        BonelessChicken.add("75 Piece Tenders");
-        BonelessChicken.add("100 Piece Tenders");
+//        BonelessChicken.add("3 Piece Tenders");
+//        BonelessChicken.add("5 Piece Tenders");
+//        BonelessChicken.add("10 Piece Tenders");
+//        BonelessChicken.add("15 Piece Tenders");
+//        BonelessChicken.add("25 Piece Tenders");
+//        BonelessChicken.add("50 Piece Tenders");
+//        BonelessChicken.add("75 Piece Tenders");
+//        BonelessChicken.add("100 Piece Tenders");
 
         List<String> BoneInChicken = new ArrayList<String>();
-        BoneInChicken.add("8 Piece Mixed Chicken");
-        BoneInChicken.add("12 Piece Mixed Chicken");
-        BoneInChicken.add("16 Piece Mixed Chicken");
-        BoneInChicken.add("20 Piece Mixed Chicken");
-        BoneInChicken.add("24 Piece Mixed Chicken");
-        BoneInChicken.add("50 Piece Mixed Chicken");
-        BoneInChicken.add("100 Piece Mixed Chicken");
-        BoneInChicken.add("200 Piece Mixed Chicken");
+//        BoneInChicken.add("8 Piece Mixed Chicken");
+//        BoneInChicken.add("12 Piece Mixed Chicken");
+//        BoneInChicken.add("16 Piece Mixed Chicken");
+//        BoneInChicken.add("20 Piece Mixed Chicken");
+//        BoneInChicken.add("24 Piece Mixed Chicken");
+//        BoneInChicken.add("50 Piece Mixed Chicken");
+//        BoneInChicken.add("100 Piece Mixed Chicken");
+//        BoneInChicken.add("200 Piece Mixed Chicken");
 
         List<String> ButtermilkBiscuits = new ArrayList<String>();
-        ButtermilkBiscuits.add("1 Biscuit");
-        ButtermilkBiscuits.add("6 Biscuits");
-        ButtermilkBiscuits.add("12 Biscuits");
+//        ButtermilkBiscuits.add("1 Biscuit");
+//        ButtermilkBiscuits.add("6 Biscuits");
+//        ButtermilkBiscuits.add("12 Biscuits");
 
         List<String> FamilyMeals = new ArrayList<String>();
-        FamilyMeals.add("12 Pieces Mixed Chicken");
-        FamilyMeals.add("16 Pieces Mixed Chicken");
-        FamilyMeals.add("20 Pieces Mixed Chicken");
-        FamilyMeals.add("24 Pieces Mixed Chicken");
+//        FamilyMeals.add("12 Pieces Mixed Chicken");
+//        FamilyMeals.add("16 Pieces Mixed Chicken");
+//        FamilyMeals.add("20 Pieces Mixed Chicken");
+//        FamilyMeals.add("24 Pieces Mixed Chicken");
 
 
         List<String> Dessert = new ArrayList<String>();
-        Dessert.add("Cinnamon Apple Pie");
-        Dessert.add("2 Cinnamon Apple Pies");
-        Dessert.add("Lemonade Ice Box Pie");
+//        Dessert.add("Cinnamon Apple Pie");
+//        Dessert.add("2 Cinnamon Apple Pies");
+//        Dessert.add("Lemonade Ice Box Pie");
 
 
         List<String> Beverages = new ArrayList<String>();
-        Beverages.add("Bottled Water");
-        Beverages.add("Bottled Soda");
-        Beverages.add("Gallons");
+//        Beverages.add("Bottled Water");
+//        Beverages.add("Bottled Soda");
+//        Beverages.add("Gallons");
 
+
+        for(JSONObject o : db.getAllMenu()){
+            try {
+                if (o.getString("category").equals("Combos")) {
+                    Combos.add(o.getString("name"));
+                }
+                else if (o.getString("category").equals("Platters")) {
+                    Platters.add(o.getString("name"));
+                }
+                else if(o.getString("category").equals("Signature sides")){
+                    SignatureSides.add(o.getString("name"));
+                }
+                else if(o.getString("category").equals("Boneless Chicken")){
+                    BonelessChicken.add(o.getString("name"));
+                }
+                else if(o.getString("category").equals("Bone in Chicken")){
+                    BoneInChicken.add(o.getString("name"));
+                }
+                else if(o.getString("category").equals("Buttermilk biscuits ")){
+                    ButtermilkBiscuits.add(o.getString("name"));
+                }
+                else if(o.getString("category").equals("Family Meals")){
+                    FamilyMeals.add(o.getString("name"));
+                }
+                else if(o.getString("category").equals("Dessert")){
+                    Dessert.add(o.getString("name"));
+                }
+                else if(o.getString("category").equals("Beverages")){
+                    Beverages.add(o.getString("name"));
+                }
+                Log.v("lambopopo", o.getString("category"));
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
 
 
         listDataChild.put(listDataHeader.get(0), Combos); // Header, Child data
@@ -186,7 +225,7 @@ public class ResMenuActivity extends Activity {
         listDataChild.put(listDataHeader.get(5), ButtermilkBiscuits);
         listDataChild.put(listDataHeader.get(6), FamilyMeals);
         listDataChild.put(listDataHeader.get(7), Dessert);
-        listDataChild.put(listDataHeader.get(8), db.getAllMenu());
+        listDataChild.put(listDataHeader.get(8), Beverages);
 
 
     }

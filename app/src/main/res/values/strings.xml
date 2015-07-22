@@ -50,5 +50,6 @@
     <string name="title_activity_cus_create_screen">CusCreateScreen</string>
     <string name="title_activity_res_menu">ResMenuActivity</string>
     <string name="title_activity_menu_expand">MenuExpand</string>
+    <string name="title_activity_invoice">Invoice</string>
 
 </resources>

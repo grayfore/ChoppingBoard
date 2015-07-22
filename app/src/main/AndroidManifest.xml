@@ -110,6 +110,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.choppingboard.v1.ResMenuActivity" />
         </activity>
+        <activity
+            android:name=".Invoice"
+            android:label="@string/title_activity_invoice" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.choppingboard.v1.DashBoard" />
+        </activity>
     </application>
 
 </manifest>

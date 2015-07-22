@@ -33,7 +33,8 @@ public class DashBoard extends Activity{
         DashBoard.this.startActivity(intent);
     }
     public void invoiceScreen(View view){
-
+        Intent intent = new Intent(DashBoard.this, Invoice.class);
+        DashBoard.this.startActivity(intent);
     }
 
     //on start and on stop are used as booleans for intent if statement in GCMNotificationIntent Service
