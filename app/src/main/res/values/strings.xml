@@ -51,5 +51,6 @@
     <string name="title_activity_res_menu">ResMenuActivity</string>
     <string name="title_activity_menu_expand">MenuExpand</string>
     <string name="title_activity_invoice">Invoice</string>
+    <string name="title_activity_invoice_screen">InvoiceScreen</string>
 
 </resources>

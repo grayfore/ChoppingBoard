@@ -117,6 +117,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.choppingboard.v1.DashBoard" />
         </activity>
+        <activity
+            android:name=".InvoiceScreen"
+            android:label="@string/title_activity_invoice_screen" >
+        </activity>
     </application>
 
 </manifest>

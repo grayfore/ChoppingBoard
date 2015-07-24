@@ -97,7 +97,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + PRICE + " TEXT, "
                 + DESC + " MEDIUMTEXT, "
                 + TITLE + " MEDIUMTEXT "
-          //      + LINK + " MEDIUMTEXT "
+                //      + LINK + " MEDIUMTEXT "
                 + ")";
 
         db.execSQL(CREATE_CUSTOMER_TABLE);
@@ -110,7 +110,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * Reset process for this class when the database requires an upgrade
      *
-     * @param db The database to be upgraded
+     * @param db         The database to be upgraded
      * @param oldVersion Version number of the old database
      * @param newVersion Version number of the new database
      */
@@ -125,8 +125,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public ArrayList<String> getInvoice(){
-        ArrayList<String> OrderList = new ArrayList<String>();
+    public ArrayList<JSONObject> getInvoice(int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay) {
+        ArrayList<JSONObject> OrderList = new ArrayList<JSONObject>();
         String selectQuery = "SELECT  * FROM " + ORDER_INFO;
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -137,8 +137,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             do {
 
                 String thing = cursor.getString(3);
+                String[] buffer = thing.split(" ");
+                String buffer2 = buffer[0];
+                String[] buffer3 = buffer2.split("-");
+                int Year = Integer.parseInt(buffer3[0]);
+                int Month = Integer.parseInt(buffer3[1]);
+                int Day = Integer.parseInt(buffer3[2]);
 
-                OrderList.add(thing);
+                if (startYear <= Year && Year <= endYear && startMonth <= Month && startMonth <= endMonth
+                        && startDay <= Day && Day <= endDay) {
+                    try {
+                        JSONObject customerinfo = new JSONObject(cursor.getString(1));
+                        OrderList.add(customerinfo);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 // Adding contact to list
             } while (cursor.moveToNext());
         }
@@ -151,16 +166,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         Log.v("lambo", str);
 
-        try{
+        try {
             JSONObject obj = new JSONObject(str);
             values.put(NUMBER, obj.getString("id"));
             values.put(CATEGORY, obj.getString("category"));
             values.put(NAME, obj.getString("name"));
             values.put(PRICE, obj.getString("price"));
             values.put(DESC, obj.getString("description"));
-        //    values.put(LINK, obj.getString("link"));
+            //    values.put(LINK, obj.getString("link"));
 
-        }catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -186,7 +201,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 String name = cursor.getString(2);
                 String price = cursor.getString(3);
                 String desc = cursor.getString(4);
-               // String link = cursor.getString(5);
+                // String link = cursor.getString(5);
 
 //                try{
 //                    json.put("number", number);
@@ -199,26 +214,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 //                    e.printStackTrace();
 //                }
                 JSONObject json = new JSONObject();
-                try{
+                try {
                     json.put("name", name);
                     json.put("price", price);
                     json.put("number", number);
 
-                    if(Menu.get(category) != null){
+                    if (Menu.get(category) != null) {
                         list = Menu.get(category);
-                        if(!list.contains(json)){
+                        if (!list.contains(json)) {
                             list.add(json);
                         }
-                    }else{
+                    } else {
                         list.add(json);
                     }
 
 
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                Menu.put(category,list);
+                Menu.put(category, list);
                 // Adding contact to list
             } while (cursor.moveToNext());
         }
@@ -231,7 +246,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      *
      * @param str The JSON string to be added to the database as an order
      */
-    public  void addOrder(String str) {
+    public void addOrder(String str) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -247,7 +262,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      *
      * @param str The JSON string to be added to the database as a customer
      */
-    public  void addCustomer(String str) {
+    public void addCustomer(String str) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -270,7 +285,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Customer_Json, newStr);
         Log.v("New string:", newStr);
         String whereClause = Customer_Json + " = '" + oldStr + "'";
-        for(JSONObject j : getAllCustomers()) {
+        for (JSONObject j : getAllCustomers()) {
             Log.v("Old string:", j.toString());
         }
         db.update(CUSTOMER_INFO, values, whereClause, null);
@@ -280,10 +295,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * Changes the status of a single order
      *
-     * @param str The JSON string of the order to be updated
+     * @param str     The JSON string of the order to be updated
      * @param newStat The new status value to be set for that order
      */
-    public void updateStatus(String str, String newStat){
+    public void updateStatus(String str, String newStat) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Status, newStat);
@@ -297,7 +312,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * @param str The JSON string of the order to be checked
      * @return answer The status of that order
      */
-    public String getStatus(String str){
+    public String getStatus(String str) {
         String answer = "";
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -322,7 +337,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public ArrayList<String> getAllStatus() {
         ArrayList<String> OrderList = new ArrayList<String>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + ORDER_INFO + " ORDER BY " +ORD_KEY_ID + " DESC";
+        String selectQuery = "SELECT  * FROM " + ORDER_INFO + " ORDER BY " + ORD_KEY_ID + " DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -330,8 +345,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                    String orderinfo = cursor.getString(2);
-                    OrderList.add(orderinfo);
+                String orderinfo = cursor.getString(2);
+                OrderList.add(orderinfo);
                 // Adding contact to list
             } while (cursor.moveToNext());
         }
@@ -347,7 +362,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public ArrayList<JSONObject> getAllOrders() {
         ArrayList<JSONObject> OrderList = new ArrayList<JSONObject>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + ORDER_INFO + " ORDER BY " +ORD_KEY_ID + " DESC";
+        String selectQuery = "SELECT  * FROM " + ORDER_INFO + " ORDER BY " + ORD_KEY_ID + " DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -355,10 +370,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                try{
+                try {
                     JSONObject orderinfo = new JSONObject(cursor.getString(1));
                     OrderList.add(orderinfo);
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 // Adding contact to list
@@ -376,7 +391,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public ArrayList<JSONObject> getAllCustomers() {
         ArrayList<JSONObject> CustomerList = new ArrayList<JSONObject>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + CUSTOMER_INFO + " ORDER BY " +CUS_KEY_ID + " DESC";
+        String selectQuery = "SELECT  * FROM " + CUSTOMER_INFO + " ORDER BY " + CUS_KEY_ID + " DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -384,10 +399,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                try{
+                try {
                     JSONObject customerinfo = new JSONObject(cursor.getString(1));
                     CustomerList.add(customerinfo);
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 // Adding contact to list
@@ -405,7 +420,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public ArrayList<String> getAllNums() {
         ArrayList<String> OrderList = new ArrayList<String>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + ORDER_INFO + " ORDER BY " +ORD_KEY_ID + " DESC";
+        String selectQuery = "SELECT  * FROM " + ORDER_INFO + " ORDER BY " + ORD_KEY_ID + " DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

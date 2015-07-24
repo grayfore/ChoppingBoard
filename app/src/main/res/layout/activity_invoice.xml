@@ -48,7 +48,7 @@
         android:id="@+id/enter"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/second"
-        android:text="Submit"
+        android:text="Retrieve Orders"
         android:textSize="20dp"
         android:layout_marginTop="15dp"
         android:padding="20dp"

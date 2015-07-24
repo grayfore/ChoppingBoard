@@ -1,6 +1,7 @@
 package com.choppingboard.v1;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -8,8 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-
-import java.util.ArrayList;
+import android.widget.Toast;
 
 
 public class Invoice extends Activity {
@@ -33,19 +33,32 @@ public class Invoice extends Activity {
 
     public void findOrders(View view) {
 
-        int firstMonth = first.getMonth();
-        int firstDay = first.getDayOfMonth();
-        int firstYear = first.getYear();
+        String firstMonth = ""+first.getMonth();
+        String firstDay = ""+first.getDayOfMonth();
+        String firstYear = ""+first.getYear();
 
-        int secondMonth = second.getMonth();
-        int secondDay = second.getDayOfMonth();
-        int secondYear = second.getYear();
+        String secondMonth = ""+second.getMonth();
+        String secondDay = ""+second.getDayOfMonth();
+        String secondYear = ""+second.getYear();
 
 
-        ArrayList<String> h = db.getInvoice();
-        for(String s : h){
-            Log.v("lamboyo", s);
+        if(db.getInvoice(Integer.parseInt(firstYear), Integer.parseInt(firstMonth),
+                Integer.parseInt(firstDay), Integer.parseInt(secondYear),Integer.parseInt(secondMonth), Integer.parseInt(secondDay)).isEmpty()){
+            Toast.makeText(getApplicationContext(), "No available orders.  Please enter new dates", Toast.LENGTH_LONG).show();
+            Log.v("made","WE MADE IT");
         }
+        else {
+            Intent intent = new Intent(Invoice.this, InvoiceScreen.class);
+        intent.putExtra("firstYear", firstYear);
+        intent.putExtra("firstMonth", firstMonth);
+        intent.putExtra("firstDay", firstDay);
+        intent.putExtra("secondYear", secondYear);
+        intent.putExtra("secondMonth", secondMonth);
+        intent.putExtra("secondDay", secondDay);
+            startActivity(intent);
+        }
+
+
 
     }
 
