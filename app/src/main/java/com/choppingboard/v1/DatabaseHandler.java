@@ -55,6 +55,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String NUMBER = "ExtraId";
     private static final String TITLE = "Title";
     private static final String TIMESTAMP = "Timestamp";
+    private static final String LINK = "LinkID";
 
 
     /**
@@ -96,6 +97,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + PRICE + " TEXT, "
                 + DESC + " MEDIUMTEXT, "
                 + TITLE + " MEDIUMTEXT "
+          //      + LINK + " MEDIUMTEXT "
                 + ")";
 
         db.execSQL(CREATE_CUSTOMER_TABLE);
@@ -156,6 +158,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put(NAME, obj.getString("name"));
             values.put(PRICE, obj.getString("price"));
             values.put(DESC, obj.getString("description"));
+        //    values.put(LINK, obj.getString("link"));
 
         }catch (JSONException e){
             e.printStackTrace();
@@ -166,7 +169,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public Map getCatMenu() {
-        Map<String, ArrayList<String>> Menu = new TreeMap<String, ArrayList<String>>();
+        Map<String, ArrayList<JSONObject>> Menu = new TreeMap<String, ArrayList<JSONObject>>();
 
         // Select All Query
         String selectQuery = "SELECT  * FROM " + CAT;
@@ -177,12 +180,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                ArrayList<String> list = new ArrayList<>();
+                ArrayList<JSONObject> list = new ArrayList<>();
                 String number = cursor.getString(0);
                 String category = cursor.getString(1);
                 String name = cursor.getString(2);
                 String price = cursor.getString(3);
                 String desc = cursor.getString(4);
+               // String link = cursor.getString(5);
 
 //                try{
 //                    json.put("number", number);
@@ -194,13 +198,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 //                }catch (JSONException e){
 //                    e.printStackTrace();
 //                }
-                if(Menu.get(category) != null){
-                    list = Menu.get(category);
-                    if(!list.contains(name)){
-                        list.add(name);
+                JSONObject json = new JSONObject();
+                try{
+                    json.put("name", name);
+                    json.put("price", price);
+                    json.put("number", number);
+
+                    if(Menu.get(category) != null){
+                        list = Menu.get(category);
+                        if(!list.contains(json)){
+                            list.add(json);
+                        }
+                    }else{
+                        list.add(json);
                     }
-                }else{
-                    list.add(name);
+
+
+                }catch (JSONException e){
+                    e.printStackTrace();
                 }
 
                 Menu.put(category,list);
@@ -210,6 +225,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // return contact list
         return Menu;
     }
+
     /**
      * Adds a new order to the datatbase
      *

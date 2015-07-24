@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +21,7 @@ public class ResMenuActivity extends Activity {
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
-    HashMap<String, List<String>> listDataChild;
+    HashMap<String, List<JSONObject>> listDataChild;
     DatabaseHandler db;
 
 
@@ -82,17 +85,18 @@ public class ResMenuActivity extends Activity {
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
                 // TODO Auto-generated method stub
-                Toast.makeText(
-                        getApplicationContext(),
-                        listDataHeader.get(groupPosition)
-                                + " : "
-                                + listDataChild.get(
-                                listDataHeader.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT)
-                        .show();
+//                Toast.makeText(
+//                        getApplicationContext(),
+//                        listDataHeader.get(groupPosition)
+//                                + " : "
+//                                + listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(ResMenuActivity.this, MenuExpand.class);
-                intent.putExtra("hello", listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition));
+                try {
+                    intent.putExtra("hello", listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).getString("number"));
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
                 startActivity(intent);
 
                 return false;
@@ -102,9 +106,9 @@ public class ResMenuActivity extends Activity {
 
     private void prepareListData() {
         listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
+        listDataChild = new HashMap<String, List<JSONObject>>();
 
-        Map<String, ArrayList<String>> Menu = db.getCatMenu();
+        Map<String, ArrayList<JSONObject>> Menu = db.getCatMenu();
 
         listDataHeader.addAll(Menu.keySet());
         for(String s : listDataHeader){
