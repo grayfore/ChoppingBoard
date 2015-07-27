@@ -23,6 +23,7 @@ public class ResMenuActivity extends Activity {
     List<String> listDataHeader;
     HashMap<String, List<JSONObject>> listDataChild;
     DatabaseHandler db;
+    public static ArrayList<String> finalOrder = new ArrayList<>();
 
 
     @Override
@@ -154,7 +155,15 @@ public class ResMenuActivity extends Activity {
 //        listDataChild.put(listDataHeader.get(6), FamilyMeals);
 //        listDataChild.put(listDataHeader.get(7), Dessert);
 //        listDataChild.put(listDataHeader.get(8), Beverages);
+    }
 
+    public void finish(View view){
+        if(finalOrder.isEmpty()){
+            Toast.makeText(this, "No Items",Toast.LENGTH_SHORT).show();
+        }else{
+            Intent intent = new Intent(ResMenuActivity.this,FinalOrderScreen.class);
+            startActivity(intent);
+        }
 
     }
 }

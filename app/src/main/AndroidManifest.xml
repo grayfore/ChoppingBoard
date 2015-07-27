@@ -120,10 +120,20 @@
         <activity
             android:name=".InvoiceScreen"
             android:label="@string/title_activity_invoice_screen" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.choppingboard.v1.Invoice" />
         </activity>
         <activity
             android:name=".ThirdPartyScreen"
             android:label="@string/title_activity_third_party_screen" >
+        </activity>
+        <activity
+            android:name=".FinalOrderScreen"
+            android:label="@string/title_activity_final_order_screen" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.choppingboard.v1.ResMenuActivity" />
         </activity>
     </application>
 
