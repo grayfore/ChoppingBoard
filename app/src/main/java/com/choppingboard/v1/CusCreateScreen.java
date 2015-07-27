@@ -92,7 +92,7 @@ public class CusCreateScreen extends Activity {
              * Allows for additional processes before text in the field is changed
              * @param s The set of characters already input into the text field
              * @param start
-             * @param count The number of characters already input intp the text field
+             * @param count The number of characters already input into the text field
              * @param after
              */
             public void beforeTextChanged(CharSequence s, int start, int count,

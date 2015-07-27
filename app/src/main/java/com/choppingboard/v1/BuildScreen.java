@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -37,17 +35,11 @@ public class BuildScreen extends Activity {
                 return handled;
             }
         });
+    }
 
-        CheckBox repeatChkBx = ( CheckBox ) findViewById( R.id.thirdPartyCheck );
-        repeatChkBx.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    Intent i = new Intent(BuildScreen.this, ThirdPartyScreen.class);
-                    BuildScreen.this.startActivity(i);
-                }
-
-            }
-        });
+    public void ThirdPartyCheck(View view) {
+        Intent i = new Intent(BuildScreen.this, ThirdPartyScreen.class);
+        BuildScreen.this.startActivity(i);
     }
 
 

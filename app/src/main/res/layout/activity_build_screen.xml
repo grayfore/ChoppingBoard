@@ -28,12 +28,12 @@
     android:layout_alignBottom="@+id/buildPhoneEdit"
     android:layout_alignParentStart="true" />
 
-    <CheckBox
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Third Party"
-        android:id="@+id/thirdPartyCheck"
-        android:checked="false"
+        android:id="@+id/ThirdPartyCheck"
         android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:onClick="ThirdPartyCheck"/>
 </RelativeLayout>
