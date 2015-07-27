@@ -276,11 +276,11 @@ public class CusCreateScreen extends Activity {
                     " against [" +inCustomer.get("phone").toString() + "]");
             if(customer.get("phone").toString().equals(inCustomer.get("phone").toString())) {
                 Log.v("Customers Equal", "true");
-                if(!customer.get("name").equals(inCustomer.get("name"))) {
+                if(!customer.get("name").toString().equals(inCustomer.get("name").toString())) {
                     Log.v("Customer Edited", "true");
                     edited = true;
                 }
-                if(!customer.get("address").equals(inCustomer.get("address"))) {
+                if(!customer.get("address").toString().equals(inCustomer.get("address").toString())) {
                     Log.v("Customer Edited", "true");
                     edited = true;
                 }

@@ -46,12 +46,12 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:id="@+id/addressEdit"
+        android:inputType="textPostalAddress"
         android:layout_marginTop="318dp"
         android:layout_alignParentTop="true"
         android:imeOptions="actionNext"
         android:layout_alignEnd="@+id/phoneEdit"
         android:layout_alignStart="@+id/phoneEdit">
-        <requestFocus></requestFocus>
     </AutoCompleteTextView>
 
     <TextView

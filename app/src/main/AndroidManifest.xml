@@ -121,6 +121,10 @@
             android:name=".InvoiceScreen"
             android:label="@string/title_activity_invoice_screen" >
         </activity>
+        <activity
+            android:name=".ThirdPartyScreen"
+            android:label="@string/title_activity_third_party_screen" >
+        </activity>
     </application>
 
 </manifest>

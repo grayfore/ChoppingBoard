@@ -52,5 +52,6 @@
     <string name="title_activity_menu_expand">MenuExpand</string>
     <string name="title_activity_invoice">Invoice</string>
     <string name="title_activity_invoice_screen">InvoiceScreen</string>
+    <string name="title_activity_third_party_screen">ThirdPartyScreen</string>
 
 </resources>

@@ -123,6 +123,7 @@ public class RegisterScreen extends Activity {
      * @param view The register button
      */
     public void RegisterUser(View view) {
+        prgDialog.setMessage("Registering you with the EasyChops Database...");
         prgDialog.show();
         String emailID = emailET.getText().toString();
         String restoId = idET.getText().toString();
@@ -139,6 +140,7 @@ public class RegisterScreen extends Activity {
             }
         }
         else {
+            prgDialog.dismiss();
             Toast.makeText(applicationContext, "Please enter valid email",
                     Toast.LENGTH_LONG).show();
         }
