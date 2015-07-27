@@ -5,7 +5,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.choppingboard.v1.SeeScreen"
-    android:id="@+id/seescreen">
+    android:id="@+id/invoicescreen"
+    >
 
     <ListView
         android:id="@android:id/list"

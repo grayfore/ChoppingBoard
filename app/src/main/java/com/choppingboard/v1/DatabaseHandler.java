@@ -10,9 +10,12 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Date;
 
 /**
  * Created by Jeff on 7/1/15.
@@ -140,19 +143,55 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 String[] buffer = thing.split(" ");
                 String buffer2 = buffer[0];
                 String[] buffer3 = buffer2.split("-");
-                int Year = Integer.parseInt(buffer3[0]);
-                int Month = Integer.parseInt(buffer3[1]);
-                int Day = Integer.parseInt(buffer3[2]);
+//                int Year = Integer.parseInt(buffer3[0]);
+//                int Month = Integer.parseInt(buffer3[1]);
+//                int Day = Integer.parseInt(buffer3[2]);
 
-                if (startYear <= Year && Year <= endYear && startMonth <= Month && startMonth <= endMonth
-                        && startDay <= Day && Day <= endDay) {
-                    try {
-                        JSONObject customerinfo = new JSONObject(cursor.getString(1));
-                        OrderList.add(customerinfo);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                String Year = buffer3[0];
+                String Month = buffer3[1];
+                String Day = buffer3[2];
+
+
+                String item = Day + "/" + Month + "/" + Year;
+                String start = startDay + "/" + (startMonth+1) + "/" + startYear;
+                String end = endDay + "/" + (endMonth +1) + "/" + endYear;
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                try {
+                    Date itemDate = sdf.parse(item);
+                    Date startDate = sdf.parse(start);
+                    Date endDate = sdf.parse(end);
+
+                    Log.v("lambololo", "Start! "+itemDate);
+                    Log.v("lambololo", ""+startDate);
+                    Log.v("lambololo", ""+endDate);
+                    Log.v("lambololo", itemDate.compareTo(startDate)+"");
+                    Log.v("lambololo", itemDate.compareTo(endDate)+"");
+
+
+
+                    if (itemDate.compareTo(startDate) >= 0 && itemDate.compareTo(endDate) <= 0) {
+                        try {
+                            JSONObject customerinfo = new JSONObject(cursor.getString(1));
+                            OrderList.add(customerinfo);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
+
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
+
+//                if (startYear <= Year && Year <= endYear && startMonth <= Month && startMonth <= endMonth && startDay <= Day && Day <= endDay
+//                        ) {
+//                    try {
+//                        JSONObject customerinfo = new JSONObject(cursor.getString(1));
+//                        OrderList.add(customerinfo);
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
 
                 // Adding contact to list
             } while (cursor.moveToNext());

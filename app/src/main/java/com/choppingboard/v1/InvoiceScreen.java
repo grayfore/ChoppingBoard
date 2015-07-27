@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 
 import org.json.JSONObject;
 
@@ -18,6 +20,7 @@ public class InvoiceScreen extends ListActivity {
     ArrayList<JSONObject> orders;
     ArrayList<String> ordernums;
     ArrayList<String> listOfStatus;
+    InvoicePopupWindow pwindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,19 @@ public class InvoiceScreen extends ListActivity {
 
         adapter = new InvoiceCustomList(InvoiceScreen.this, orders);
         getListView().setAdapter(adapter);
+
+
+        //Sets up the on click listener to open a popup window
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+//                Toast.makeText(SeeScreen.this, "You clicked on " + orders.get(position), Toast.LENGTH_SHORT).show();
+                pwindow = new InvoicePopupWindow(InvoiceScreen.this, orders.get(position),findViewById(R.id.invoicescreen), adapter);
+                pwindow.show(findViewById(R.id.invoicescreen), 0, 0);
+            }
+        });
     }
 
     @Override

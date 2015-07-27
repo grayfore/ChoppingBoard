@@ -41,6 +41,8 @@ public class Invoice extends Activity {
         String secondDay = ""+second.getDayOfMonth();
         String secondYear = ""+second.getYear();
 
+        Log.v("yoyoyo", firstDay +" "+ firstMonth +" " +firstYear);
+        Log.v("yoyoyo", secondDay +" "+ secondMonth +" " +secondDay);
 
         if(db.getInvoice(Integer.parseInt(firstYear), Integer.parseInt(firstMonth),
                 Integer.parseInt(firstDay), Integer.parseInt(secondYear),Integer.parseInt(secondMonth), Integer.parseInt(secondDay)).isEmpty()){
