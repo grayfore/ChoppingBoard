@@ -8,10 +8,25 @@
     android:id="@+id/invoicescreen"
     >
 
+    <TextView
+        android:id="@+id/titles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:text="Number of orders: "/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:id="@+id/subtotal"
+        android:layout_alignParentRight="true"
+        android:paddingRight="20dp"
+        android:text="10.56"/>
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/titles"
         >
 
 

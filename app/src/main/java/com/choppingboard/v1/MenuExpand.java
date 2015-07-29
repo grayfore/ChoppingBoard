@@ -38,7 +38,6 @@ public class MenuExpand extends Activity {
 
         ArrayList<JSONObject> list = db.getMatMenu(thing);
 
-        Log.v("hello",""+db.getMatCount());
         Log.v("lambo", "outside");
         for(JSONObject o: list){
             try{

@@ -200,6 +200,78 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return OrderList;
     }
 
+    public int getInvoiceCount(int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay) {
+        ArrayList<JSONObject> OrderList = new ArrayList<JSONObject>();
+        String selectQuery = "SELECT  * FROM " + ORDER_INFO;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+
+                String thing = cursor.getString(3);
+                String[] buffer = thing.split(" ");
+                String buffer2 = buffer[0];
+                String[] buffer3 = buffer2.split("-");
+//                int Year = Integer.parseInt(buffer3[0]);
+//                int Month = Integer.parseInt(buffer3[1]);
+//                int Day = Integer.parseInt(buffer3[2]);
+
+                String Year = buffer3[0];
+                String Month = buffer3[1];
+                String Day = buffer3[2];
+
+
+                String item = Day + "/" + Month + "/" + Year;
+                String start = startDay + "/" + (startMonth+1) + "/" + startYear;
+                String end = endDay + "/" + (endMonth +1) + "/" + endYear;
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                try {
+                    Date itemDate = sdf.parse(item);
+                    Date startDate = sdf.parse(start);
+                    Date endDate = sdf.parse(end);
+
+                    Log.v("lambololo", "Start! "+itemDate);
+                    Log.v("lambololo", ""+startDate);
+                    Log.v("lambololo", ""+endDate);
+                    Log.v("lambololo", itemDate.compareTo(startDate)+"");
+                    Log.v("lambololo", itemDate.compareTo(endDate)+"");
+
+
+
+                    if (itemDate.compareTo(startDate) >= 0 && itemDate.compareTo(endDate) <= 0) {
+                        try {
+                            JSONObject customerinfo = new JSONObject(cursor.getString(1));
+                            OrderList.add(customerinfo);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+//                if (startYear <= Year && Year <= endYear && startMonth <= Month && startMonth <= endMonth && startDay <= Day && Day <= endDay
+//                        ) {
+//                    try {
+//                        JSONObject customerinfo = new JSONObject(cursor.getString(1));
+//                        OrderList.add(customerinfo);
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+
+                // Adding contact to list
+            } while (cursor.moveToNext());
+        }
+        // return contact list
+        return OrderList.size();
+    }
+
     public void createCAT(String str) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -570,15 +642,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      */
     public int getOrderCount() {
         String countQuery = "SELECT  * FROM " + ORDER_INFO;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        // return count
-        return cursor.getCount();
-
-    }
-
-    public int getMatCount() {
-        String countQuery = "SELECT  * FROM " + MAT;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         // return count
