@@ -54,6 +54,11 @@ public class GCMNotificationIntentService extends IntentService {
                 if(!two.equals("") && !two.equals("null")){
                     sendNotification("" + extras.get(ApplicationConstants.MSG_KEY));
                 }
+//                String three = "" + extras.get(ApplicationConstants.MENU_MAT_KEY);
+//                Log.v("lambododo", three);
+//                if(!three.equals("") && !three.equals("null")){
+//                    createMat(three);
+//                }
             }
         }
         GcmBroadcastReceiver.completeWakefulIntent(intent);
@@ -138,5 +143,10 @@ public class GCMNotificationIntentService extends IntentService {
         db.createCAT(str);
 
         Log.v("lambokoko","WE MADE IT");
+    }
+
+    public void createMat(String str){
+
+        db.createMAT(str);
     }
 }

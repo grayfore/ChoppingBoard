@@ -15,4 +15,6 @@ public interface ApplicationConstants {
     static final String MSG_KEY = "m";
 
     static final String MENU_KEY = "z";
+
+    static final String MENU_MAT_KEY = "y";
 }

@@ -99,8 +99,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + NAME + " MEDIUMTEXT, "
                 + PRICE + " TEXT, "
                 + DESC + " MEDIUMTEXT, "
-                + TITLE + " MEDIUMTEXT "
-                //      + LINK + " MEDIUMTEXT "
+                + TITLE + " MEDIUMTEXT, "
+                + LINK + " MEDIUMTEXT "
                 + ")";
 
         db.execSQL(CREATE_CUSTOMER_TABLE);
@@ -280,6 +280,92 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return Menu;
     }
 
+    public void createMAT(String str) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        Log.v("lambo", str);
+
+        try {
+            JSONObject obj = new JSONObject(str);
+            values.put(NUMBER, obj.getString("id"));
+            values.put(NAME, obj.getString("name"));
+            values.put(PRICE, obj.getString("price"));
+            values.put(DESC, obj.getString("description"));
+            values.put(LINK, obj.getString("link"));
+            values.put(TITLE, obj.getString("title"));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        db.replace(MAT, null, values);
+        db.close();
+    }
+
+    public ArrayList getMatMenu(String str) {
+        Map<String, ArrayList<JSONObject>> Menu = new TreeMap<String, ArrayList<JSONObject>>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + MAT;
+
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        ArrayList<JSONObject> list = new ArrayList<>();
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+//                ArrayList<JSONObject> list = new ArrayList<>();
+                String number = cursor.getString(0);
+                String name = cursor.getString(1);
+                String price = cursor.getString(2);
+                String desc = cursor.getString(3);
+                String title = cursor.getString(4);
+                String link = cursor.getString(5);
+
+
+                JSONObject json = new JSONObject();
+
+                try{
+                    json.put("number", number);
+                    json.put("name", name);
+                    json.put("price", price);
+                    json.put("desc", desc);
+                    json.put("link", link);
+                    json.put("title", title);
+
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+
+                list.add(json);
+//                try {
+//                    json.put("name", name);
+//                    json.put("price", price);
+//                    json.put("number", number);
+//
+//                    if (Menu.get(category) != null) {
+//                        list = Menu.get(category);
+//                        if (!list.contains(json)) {
+//                            list.add(json);
+//                        }
+//                    } else {
+//                        list.add(json);
+//                    }
+//
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                Menu.put(category, list);
+                // Adding contact to list
+            } while (cursor.moveToNext());
+        }
+        // return contact list
+        return list;
+    }
     /**
      * Adds a new order to the datatbase
      *
@@ -484,6 +570,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      */
     public int getOrderCount() {
         String countQuery = "SELECT  * FROM " + ORDER_INFO;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        // return count
+        return cursor.getCount();
+
+    }
+
+    public int getMatCount() {
+        String countQuery = "SELECT  * FROM " + MAT;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         // return count
