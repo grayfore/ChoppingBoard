@@ -139,6 +139,12 @@ public class PopupWindow extends android.widget.PopupWindow {
                         ((TextView) extra.findViewById(R.id.attrib_name)).setText(newstuff);
                         table.addView(extra);
                     }
+                    if(!orderitem.getString("Instructions").equals("[null]")){
+                        TableRow inst = (TableRow) LayoutInflater.from(ctx).inflate(R.layout.extra_row, null);
+                        String instructions = orderitem.getString("Instructions");
+                        ((TextView) inst.findViewById(R.id.attrib_name)).setText(instructions);
+                        table.addView(inst);
+                    }
 
 //                    TableRow instructions = (TableRow) LayoutInflater.from(ctx).inflate(R.layout.extra_row, null);
 //                    String instruc = orderitem.getString("Instructions");

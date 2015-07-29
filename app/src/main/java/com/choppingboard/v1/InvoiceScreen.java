@@ -55,7 +55,7 @@ public class InvoiceScreen extends ListActivity {
         double finalPrice = 0;
         for(JSONObject o : orders){
             try{
-                double buffer = Integer.parseInt(o.getString("subtotal"));
+                double buffer = Double.parseDouble(o.getString("subtotal"));
                 finalPrice += buffer;
             }catch (JSONException e){
                 e.printStackTrace();

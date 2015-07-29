@@ -12,15 +12,16 @@
         android:id="@+id/titles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
+        android:textSize="25dp"
+        android:textColor="@color/black"
         android:text="Number of orders: "/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
+        android:textSize="25dp"
+        android:textColor="@color/black"
         android:id="@+id/subtotal"
         android:layout_alignParentRight="true"
-        android:paddingRight="20dp"
         android:text="10.56"/>
     <ListView
         android:id="@android:id/list"
