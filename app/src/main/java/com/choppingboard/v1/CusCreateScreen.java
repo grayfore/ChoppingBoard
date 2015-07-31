@@ -19,6 +19,8 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -309,6 +311,27 @@ public class CusCreateScreen extends Activity {
         Log.v("Old String", customer.toString());
         Log.v("New String", inCustomer.toString());
         db.editCustomer(customer.toString(), inCustomer.toString());
+    }
+
+    public void getMenu(View view){
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL("http://choppingboard.comuf.com/menu.php");
+                    URLConnection con = url.openConnection();
+                    con.setDoOutput(true);
+                    PrintStream out = new PrintStream(con.getOutputStream());
+                    con.getInputStream();
+                    System.out.print("asdad ");
+                    out.close();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
 

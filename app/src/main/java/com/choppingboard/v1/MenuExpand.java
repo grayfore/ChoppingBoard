@@ -39,11 +39,13 @@ public class MenuExpand extends Activity {
         ArrayList<JSONObject> list = db.getMatMenu(thing);
 
         Log.v("lambo", "outside");
+        Log.v("lambo", ""+db.getMatCount());
         for(JSONObject o: list){
             try{
                 Log.v("lambo", "IN here");
                 TableRow row = (TableRow) LayoutInflater.from(this).inflate(R.layout.attrib_row, null);
-                ((TextView) row.findViewById(R.id.attrib_name)).setText(o.getString("link"));
+                ((TextView) row.findViewById(R.id.attrib_name)).setText(o.getString("name"));
+                ((TextView) row.findViewById(R.id.attrib_value)).setText("$" + o.getString("price"));
                 table.addView(row);
             }catch (JSONException e){
                 e.printStackTrace();

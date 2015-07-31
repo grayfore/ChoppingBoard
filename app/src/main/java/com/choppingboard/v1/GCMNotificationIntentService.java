@@ -46,19 +46,19 @@ public class GCMNotificationIntentService extends IntentService {
 
                 String one = "" + extras.get(ApplicationConstants.MENU_KEY);
                 Log.v("lambo", one);
-                if(!one.equals("") && !one.equals("null")) {
+                if(!one.equals("") && !one.equals("null") && !one.equals(null)) {
                     createMenu(one);
                 }
                 String two = "" + extras.get(ApplicationConstants.MSG_KEY);
                 Log.v("lambohoho", two);
-                if(!two.equals("") && !two.equals("null")){
+                if(!two.equals("") && !two.equals("null") && !two.equals(null)){
                     sendNotification("" + extras.get(ApplicationConstants.MSG_KEY));
                 }
-//                String three = "" + extras.get(ApplicationConstants.MENU_MAT_KEY);
-//                Log.v("lambododo", three);
-//                if(!three.equals("") && !three.equals("null")){
-//                    createMat(three);
-//                }
+                String three = "" + extras.get(ApplicationConstants.MENU_MAT_KEY);
+                Log.v("lambododo", three);
+                if(!three.equals("") && !three.equals("null") && !three.equals(null)){
+                    createMat(three);
+                }
             }
         }
         GcmBroadcastReceiver.completeWakefulIntent(intent);
@@ -146,7 +146,9 @@ public class GCMNotificationIntentService extends IntentService {
     }
 
     public void createMat(String str){
+        db = new DatabaseHandler(this);
+            db.createMAT(str);
 
-        db.createMAT(str);
+        Log.v("lambo", "MADE IT IT IN MAT");
     }
 }

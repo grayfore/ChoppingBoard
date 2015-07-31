@@ -378,7 +378,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Map<String, ArrayList<JSONObject>> Menu = new TreeMap<String, ArrayList<JSONObject>>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + MAT;
+        String selectQuery = "SELECT  * FROM " + MAT + " WHERE " + LINK + " = '" + str +"'";
 
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -642,6 +642,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      */
     public int getOrderCount() {
         String countQuery = "SELECT  * FROM " + ORDER_INFO;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        // return count
+        return cursor.getCount();
+
+    }
+    public int getMatCount() {
+        String countQuery = "SELECT  * FROM " + MAT;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         // return count
